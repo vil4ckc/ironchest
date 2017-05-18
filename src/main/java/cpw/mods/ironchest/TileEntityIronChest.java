@@ -37,16 +37,35 @@ import net.minecraftforge.common.util.Constants;
 
 public class TileEntityIronChest extends TileEntityLockableLoot implements ITickable, IInventory
 {
-    private int ticksSinceSync = -1;
-    public float prevLidAngle;
-    public float lidAngle;
-    private int numPlayersUsing;
+    /** Chest Contents */
     public ItemStack[] chestContents;
+
+    /** Crystal chest top stacks */
     private ItemStack[] topStacks;
+
+    /** The current angle of the lid (between 0 and 1) */
+    public float lidAngle;
+
+    /** The angle of the lid last tick */
+    public float prevLidAngle;
+
+    /** The number of players currently using this chest */
+    public int numPlayersUsing;
+
+    /** Server sync counter (once per 20 ticks) */
+    private int ticksSinceSync;
+
+    /** Direction chest is facing */
     private EnumFacing facing;
+
+    /** If the inventory got touched */
     private boolean inventoryTouched;
+
+    /** If the inventory had items */
     private boolean hadStuff;
+
     private String customName;
+
     private IronChestType chestType;
 
     public TileEntityIronChest()
@@ -139,17 +158,29 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
 
         mainLoop: for (int i = 0; i < this.getSizeInventory(); i++)
         {
-            if (this.chestContents[i] != null)
+            ItemStack itemStack = this.chestContents[i];
+
+            if (itemStack != null)
             {
                 for (int j = 0; j < compressedIdx; j++)
                 {
-                    if (tempCopy[j].isItemEqual(this.chestContents[i]))
+                    ItemStack tempCopyStack = tempCopy[j];
+
+                    if (ItemStack.areItemsEqual(tempCopyStack, itemStack))
                     {
-                        tempCopy[j].stackSize += this.chestContents[i].stackSize;
+                        if (itemStack.stackSize != tempCopyStack.stackSize)
+                        {
+                            tempCopyStack.stackSize += this.chestContents[i].stackSize;
+                        }
+
                         continue mainLoop;
                     }
                 }
-                tempCopy[compressedIdx++] = this.chestContents[i].copy();
+
+                tempCopy[compressedIdx] = itemStack.copy();
+
+                compressedIdx++;
+
                 hasStuff = true;
             }
         }
@@ -166,6 +197,7 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
             if (this.worldObj != null)
             {
                 IBlockState iblockstate = this.worldObj.getBlockState(this.pos);
+
                 this.worldObj.notifyBlockUpdate(this.pos, iblockstate, iblockstate, 3);
             }
 
@@ -199,12 +231,14 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
         {
             if (element != null && element.stackSize > 0)
             {
-                this.topStacks[p++] = element;
-
                 if (p == this.topStacks.length)
                 {
                     break;
                 }
+
+                this.topStacks[p] = element;
+
+                p++;
             }
         }
 
@@ -408,9 +442,7 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
             double y = this.pos.getY() + 0.5D;
             double z = this.pos.getZ() + 0.5D;
 
-            //@formatter:off
             this.worldObj.playSound(null, x, y, z, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-            //@formatter:on
         }
 
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
@@ -439,9 +471,7 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
                 double y = this.pos.getY() + 0.5D;
                 double z = this.pos.getZ() + 0.5D;
 
-                //@formatter:off
                 this.worldObj.playSound(null, x, y, z, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-                //@formatter:on
             }
 
             if (this.lidAngle < 0.0F)
@@ -613,12 +643,14 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
             {
                 if (is != null)
                 {
-                    sortList[pos++] = is;
+                    sortList[pos] = is;
                 }
                 else
                 {
-                    sortList[pos++] = null;
+                    sortList[pos] = null;
                 }
+
+                pos++;
             }
 
             return sortList;
