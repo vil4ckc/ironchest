@@ -28,6 +28,11 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
+    public World getClientWorld()
+    {
+        return null;
+    }
+
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {

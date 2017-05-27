@@ -37,7 +37,7 @@ public class ContainerIronChest extends Container
     @Override
     public boolean canInteractWith(EntityPlayer player)
     {
-        return this.chest.isUseableByPlayer(player);
+        return this.chest.isUsableByPlayer(player);
     }
 
     @Override

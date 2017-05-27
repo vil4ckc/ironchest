@@ -12,14 +12,18 @@ package cpw.mods.ironchest;
 
 import java.util.Properties;
 
+import cpw.mods.ironchest.network.MessageCrystalChestSync;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = IronChest.MOD_ID, name = "Iron Chests", dependencies = "required-after:Forge@[12.17.0.1909,)", acceptedMinecraftVersions = "[1.9.4, 1.11)")
 public class IronChest
@@ -35,6 +39,8 @@ public class IronChest
     public static BlockIronChest ironChestBlock;
     public static ItemIronChest ironChestItemBlock;
 
+    public static final SimpleNetworkWrapper packetHandler = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -46,7 +52,6 @@ public class IronChest
             String minor = properties.getProperty("IronChest.build.minor.number");
             String rev = properties.getProperty("IronChest.build.revision.number");
             String build = properties.getProperty("IronChest.build.number");
-            // String mcversion = properties.getProperty("IronChest.build.mcversion");
             event.getModMetadata().version = String.format("%s.%s.%s build %s", major, minor, rev, build);
         }
 
@@ -64,5 +69,12 @@ public class IronChest
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
         proxy.registerRenderInformation();
         MinecraftForge.EVENT_BUS.register(new OcelotsSitOnChestsHandler());
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+        int messageId = 0;
+        packetHandler.registerMessage(MessageCrystalChestSync.Handler.class, MessageCrystalChestSync.class, messageId++, Side.CLIENT);
     }
 }

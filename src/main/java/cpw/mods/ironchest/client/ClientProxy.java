@@ -15,6 +15,7 @@ import cpw.mods.ironchest.CommonProxy;
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.IronChestType;
 import cpw.mods.ironchest.TileEntityIronChest;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -53,6 +54,12 @@ public class ClientProxy extends CommonProxy
             ModelLoader.setCustomModelResourceLocation(type.item, 0, new ModelResourceLocation(new ResourceLocation(IronChest.MOD_ID, "ItemChestUpgrade"), "variant=" + type.itemName.toLowerCase()));
             //@formatter:on
         }
+    }
+
+    @Override
+    public World getClientWorld()
+    {
+        return Minecraft.getMinecraft().world;
     }
 
     @Override
