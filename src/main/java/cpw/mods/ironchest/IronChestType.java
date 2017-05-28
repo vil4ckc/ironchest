@@ -109,11 +109,13 @@ public enum IronChestType implements IStringSerializable
     public static void registerBlocksAndRecipes(BlockIronChest blockResult)
     {
         Object previous = "chestWood";
+
         for (IronChestType typ : values())
         {
             generateRecipesForType(blockResult, previous, typ);
+
             ItemStack chest = new ItemStack(blockResult, 1, typ.ordinal());
-            // if (typ.isValidForCreativeMode()) GameRegistry.registerCustomItemStack(typ.friendlyName, chest);//TODO fix this!!
+
             if (typ.tieredChest)
             {
                 previous = chest;
@@ -152,12 +154,14 @@ public enum IronChestType implements IStringSerializable
         {
             return Blocks.DIRT;
         }
+
         return mat;
     }
 
     public static void addRecipe(ItemStack is, Object... parts)
     {
         ShapedOreRecipe oreRecipe = new ShapedOreRecipe(is, parts);
+
         GameRegistry.addRecipe(oreRecipe);
     }
 

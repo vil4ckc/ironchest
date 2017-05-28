@@ -47,10 +47,9 @@ public class BlockIronChest extends Block
     public BlockIronChest()
     {
         super(Material.IRON);
+
         this.setRegistryName(new ResourceLocation(IronChest.MOD_ID, "BlockIronChest"));
-
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT_PROP, IronChestType.IRON));
-
         this.setHardness(3.0F);
         this.setUnlocalizedName("IronChest");
         this.setCreativeTab(CreativeTabs.DECORATIONS);
@@ -103,6 +102,7 @@ public class BlockIronChest extends Block
         }
 
         player.openGui(IronChest.instance, ((TileEntityIronChest) te).getType().ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+
         return true;
     }
 
@@ -153,6 +153,7 @@ public class BlockIronChest extends Block
     public void onBlockAdded(World world, BlockPos pos, IBlockState blockState)
     {
         super.onBlockAdded(world, pos, blockState);
+
         world.notifyBlockUpdate(pos, blockState, blockState, 3);
     }
 
@@ -160,11 +161,14 @@ public class BlockIronChest extends Block
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState blockState, EntityLivingBase entityliving, ItemStack itemStack)
     {
         TileEntity te = world.getTileEntity(pos);
+
         if (te != null && te instanceof TileEntityIronChest)
         {
             TileEntityIronChest teic = (TileEntityIronChest) te;
+
             teic.wasPlaced(entityliving, itemStack);
             teic.setFacing(entityliving.getHorizontalFacing().getOpposite());
+
             world.notifyBlockUpdate(pos, blockState, blockState, 3);
         }
     }
@@ -186,6 +190,7 @@ public class BlockIronChest extends Block
 
             InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
         }
+
         super.breakBlock(worldIn, pos, state);
     }
 
@@ -193,14 +198,17 @@ public class BlockIronChest extends Block
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
         TileEntity te = world.getTileEntity(pos);
+
         if (te instanceof TileEntityIronChest)
         {
             TileEntityIronChest teic = (TileEntityIronChest) te;
+
             if (teic.getType().isExplosionResistant())
             {
                 return 10000F;
             }
         }
+
         return super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
@@ -214,10 +222,12 @@ public class BlockIronChest extends Block
     public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos)
     {
         TileEntity te = world.getTileEntity(pos);
+
         if (te instanceof IInventory)
         {
             return Container.calcRedstoneFromInventory((IInventory) te);
         }
+
         return 0;
     }
 
@@ -236,14 +246,18 @@ public class BlockIronChest extends Block
         {
             return false;
         }
+
         if (axis == EnumFacing.UP || axis == EnumFacing.DOWN)
         {
             TileEntity tileEntity = worldObj.getTileEntity(pos);
+
             if (tileEntity instanceof TileEntityIronChest)
             {
                 TileEntityIronChest icte = (TileEntityIronChest) tileEntity;
+
                 icte.rotateAround();
             }
+
             return true;
         }
         return false;
@@ -254,7 +268,9 @@ public class BlockIronChest extends Block
     public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
     {
         super.eventReceived(state, worldIn, pos, id, param);
+
         TileEntity tileentity = worldIn.getTileEntity(pos);
+
         return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 }

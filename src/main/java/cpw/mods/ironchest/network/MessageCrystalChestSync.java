@@ -3,7 +3,6 @@ package cpw.mods.ironchest.network;
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.TileEntityIronChest;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -38,18 +37,9 @@ public class MessageCrystalChestSync implements IMessage
         int size = buf.readInt();
         this.topStacks = new ItemStack[size];
 
-        int stackListSize = buf.readInt();
-
-        for (int i = 0; i < stackListSize; i++)
+        for (int i = 0; i < size; i++)
         {
-            if (i < stackListSize)
-            {
-                this.topStacks[i] = readItemStack(buf);
-            }
-            else
-            {
-                this.topStacks[i] = null;
-            }
+            this.topStacks[i] = ByteBufUtils.readItemStack(buf);
         }
     }
 
@@ -62,40 +52,10 @@ public class MessageCrystalChestSync implements IMessage
         buf.writeInt(this.pos.getZ());
         buf.writeInt(topStacks.length);
 
-        int stackListSize = 0;
-
         for (ItemStack stack : topStacks)
         {
-            if (stack != null)
-            {
-                stackListSize++;
-            }
+            ByteBufUtils.writeItemStack(buf, stack);
         }
-
-        buf.writeInt(stackListSize);
-
-        for (ItemStack stack : topStacks)
-        {
-            if (stack != null)
-            {
-                writeItemStack(buf, stack);
-            }
-        }
-    }
-
-    public static void writeItemStack(ByteBuf buf, ItemStack stack)
-    {
-        buf.writeInt(Item.getIdFromItem(stack.getItem()));
-        buf.writeInt(stack.stackSize);
-        buf.writeInt(stack.getItemDamage());
-        ByteBufUtils.writeTag(buf, stack.getItem().getNBTShareTag(stack));
-    }
-
-    public static ItemStack readItemStack(ByteBuf buf)
-    {
-        ItemStack stack = new ItemStack(Item.getItemById(buf.readInt()), buf.readInt(), buf.readInt());
-        stack.setTagCompound(ByteBufUtils.readTag(buf));
-        return stack;
     }
 
     public static class Handler implements IMessageHandler<MessageCrystalChestSync, IMessage>
@@ -112,6 +72,7 @@ public class MessageCrystalChestSync implements IMessage
                 if (tile instanceof TileEntityIronChest)
                     ((TileEntityIronChest) tile).receiveMessageFromServer(message.topStacks);
             }
+
             return null;
         }
     }

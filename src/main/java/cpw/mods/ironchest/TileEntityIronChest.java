@@ -168,7 +168,7 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
                 {
                     ItemStack tempCopyStack = tempCopy[j];
 
-                    if (ItemStack.areItemsEqual(tempCopyStack, itemStack))
+                    if (ItemStack.areItemsEqualIgnoreDurability(tempCopyStack, itemStack))
                     {
                         if (itemStack.stackSize != tempCopyStack.stackSize)
                         {
@@ -194,13 +194,6 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
             for (int i = 0; i < this.topStacks.length; i++)
             {
                 this.topStacks[i] = null;
-            }
-
-            if (this.world != null)
-            {
-                IBlockState iblockstate = this.world.getBlockState(this.pos);
-
-                this.world.notifyBlockUpdate(this.pos, iblockstate, iblockstate, 3);
             }
 
             return;
@@ -247,13 +240,6 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
         for (int i = p; i < this.topStacks.length; i++)
         {
             this.topStacks[i] = null;
-        }
-
-        if (this.world != null)
-        {
-            IBlockState iblockstate = this.world.getBlockState(this.pos);
-
-            this.world.notifyBlockUpdate(this.pos, iblockstate, iblockstate, 3);
         }
 
         sendTopStacksPacket();

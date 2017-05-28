@@ -57,8 +57,11 @@ public enum ChestChangerType
     public ItemChestChanger buildItem()
     {
         this.item = new ItemChestChanger(this);
+
         this.item.setRegistryName(this.itemName);
+
         GameRegistry.register(this.item);
+
         return this.item;
     }
 

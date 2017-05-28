@@ -45,10 +45,12 @@ public class ContainerIronChest extends Container
     {
         ItemStack itemstack = null;
         Slot slot = this.inventorySlots.get(i);
+
         if (slot != null && slot.getHasStack())
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
+
             if (i < this.type.size)
             {
                 if (!this.mergeItemStack(itemstack1, this.type.size, this.inventorySlots.size(), true))
@@ -73,6 +75,7 @@ public class ContainerIronChest extends Container
                 slot.onSlotChanged();
             }
         }
+
         return itemstack;
     }
 
@@ -80,6 +83,7 @@ public class ContainerIronChest extends Container
     public void onContainerClosed(EntityPlayer entityplayer)
     {
         super.onContainerClosed(entityplayer);
+
         this.chest.closeInventory(entityplayer);
     }
 
@@ -101,12 +105,14 @@ public class ContainerIronChest extends Container
         }
 
         int leftCol = (xSize - 162) / 2 + 1;
+
         for (int playerInvRow = 0; playerInvRow < 3; playerInvRow++)
         {
             for (int playerInvCol = 0; playerInvCol < 9; playerInvCol++)
             {
-                this.addSlotToContainer(
-                        new Slot(playerInventory, playerInvCol + playerInvRow * 9 + 9, leftCol + playerInvCol * 18, ySize - (4 - playerInvRow) * 18 - 10));
+                //@formatter:off
+                this.addSlotToContainer(new Slot(playerInventory, playerInvCol + playerInvRow * 9 + 9, leftCol + playerInvCol * 18, ySize - (4 - playerInvRow) * 18 - 10));
+                //@formatter:on
             }
 
         }

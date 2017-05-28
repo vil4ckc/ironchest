@@ -52,6 +52,7 @@ public class IronChest
             String minor = properties.getProperty("IronChest.build.minor.number");
             String rev = properties.getProperty("IronChest.build.revision.number");
             String build = properties.getProperty("IronChest.build.number");
+
             event.getModMetadata().version = String.format("%s.%s.%s build %s", major, minor, rev, build);
         }
 
