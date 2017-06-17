@@ -20,6 +20,7 @@ import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import cpw.mods.ironchest.common.crafting.IronShulkerBoxColoringRecipe;
+import cpw.mods.ironchest.common.crafting.IronShulkerBoxRecipe;
 import cpw.mods.ironchest.common.items.ChestChangerType;
 import cpw.mods.ironchest.common.items.ShulkerBoxChangerType;
 import cpw.mods.ironchest.common.items.chest.ItemIronChest;
@@ -134,6 +135,7 @@ public class ICContent
 
         GameRegistry.addRecipe(new IronShulkerBoxColoringRecipe());
         RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxColoringRecipe.class, Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxRecipe.class, Category.SHAPED, "after:forge:shapelessore");
 
         ShulkerBoxChangerType.generateRecipes();
         // Shulkers End
