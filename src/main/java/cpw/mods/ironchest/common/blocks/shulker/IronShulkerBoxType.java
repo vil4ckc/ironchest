@@ -25,6 +25,7 @@ import cpw.mods.ironchest.common.tileentity.shulker.TileEntityObsidianShulkerBox
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntitySilverShulkerBox;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.EnumDyeColor;
@@ -42,7 +43,7 @@ public enum IronShulkerBoxType implements IStringSerializable
     SILVER(72, 9, false, "_silver.png", TileEntitySilverShulkerBox.class, 184, 238, Collections.singleton("ingotSilver"), "mmmm3mmmm", "mGmG0GmGm"),
     CRYSTAL(108, 12, true, "_crystal.png", TileEntityCrystalShulkerBox.class, 238, 256, Collections.singleton("blockGlass"), "GGGGPGGGG"),
     OBSIDIAN(108, 12, false, "_obsidian.png", TileEntityObsidianShulkerBox.class, 238, 256, Collections.singleton("obsidian"), "mmmm2mmmm"),
-    VANILLA(0, 0, false, "", null, 0, 0, Collections.singleton("shulkerBox"));
+    VANILLA(0, 0, false, "", null, 0, 0, Collections.singleton("shulkerShell"));
     //@formatter:on
 
     public static final IronShulkerBoxType VALUES[] = values();
@@ -163,9 +164,9 @@ public enum IronShulkerBoxType implements IStringSerializable
 
     public static Object translateOreName(String mat)
     {
-        if (mat.equals("shulkerBox"))
+        if (mat.equals("shulkerShell"))
         {
-            return Blocks.PURPLE_SHULKER_BOX;
+            return Items.SHULKER_SHELL;
         }
 
         if (mat.equals("obsidian"))

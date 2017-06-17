@@ -109,6 +109,9 @@ public class ICContent
         // Shulkers Start
         setVanillaShulkerList();
 
+        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxColoringRecipe.class, Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxRecipe.class, Category.SHAPED, "after:forge:shapelessore");
+
         ShulkerBoxChangerType.buildItems();
 
         registerShulkerBlocks();
@@ -134,8 +137,6 @@ public class ICContent
         }
 
         GameRegistry.addRecipe(new IronShulkerBoxColoringRecipe());
-        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxColoringRecipe.class, Category.SHAPELESS, "after:forge:shapelessore");
-        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxRecipe.class, Category.SHAPED, "after:forge:shapelessore");
 
         ShulkerBoxChangerType.generateRecipes();
         // Shulkers End
