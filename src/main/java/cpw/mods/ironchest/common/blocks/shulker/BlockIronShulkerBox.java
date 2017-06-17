@@ -373,9 +373,37 @@ public class BlockIronShulkerBox extends Block
 
                     if (j - i > 0)
                     {
-                    //@formatter:off
-                    tooltip.add(String.format(TextFormatting.ITALIC + I18n.translateToLocal("container.shulkerBox.more"), new Object[] {Integer.valueOf(j - i)}));
-                    //@formatter:on
+                        //@formatter:off
+                        tooltip.add(String.format(TextFormatting.ITALIC + I18n.translateToLocal("container.shulkerBox.more"), new Object[] { Integer.valueOf(j - i) }));
+                        //@formatter:on
+                    }
+                }
+                else
+                {
+                    NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack> withSize(27, ItemStack.EMPTY);
+                    ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
+                    int i = 0;
+                    int j = 0;
+
+                    for (ItemStack itemstack : nonnulllist)
+                    {
+                        if (!itemstack.isEmpty())
+                        {
+                            ++j;
+
+                            if (i <= 4)
+                            {
+                                ++i;
+                                tooltip.add(String.format("%s x%d", new Object[] { itemstack.getDisplayName(), Integer.valueOf(itemstack.getCount()) }));
+                            }
+                        }
+                    }
+
+                    if (j - i > 0)
+                    {
+                        //@formatter:off
+                        tooltip.add(String.format(TextFormatting.ITALIC + I18n.translateToLocal("container.shulkerBox.more"), new Object[] { Integer.valueOf(j - i) }));
+                        //@formatter:on
                     }
                 }
             }

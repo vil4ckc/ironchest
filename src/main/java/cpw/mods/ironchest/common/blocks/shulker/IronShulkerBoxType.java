@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import cpw.mods.ironchest.common.crafting.IronShulkerBoxRecipe;
 import cpw.mods.ironchest.common.gui.shulker.slot.ValidatingShulkerBoxSlot;
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntityCopperShulkerBox;
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntityCrystalShulkerBox;
@@ -30,7 +31,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public enum IronShulkerBoxType implements IStringSerializable
 {
@@ -38,7 +38,7 @@ public enum IronShulkerBoxType implements IStringSerializable
     IRON(54, 9, true, "_iron.png", TileEntityIronShulkerBox.class, 184, 202, Arrays.asList("ingotIron", "ingotRefinedIron"), "mmmmPmmmm", "mGmG3GmGm"),
     GOLD(81, 9, true, "_gold.png", TileEntityGoldShulkerBox.class, 184, 256, Collections.singleton("ingotGold"), "mmmmPmmmm", "mGmG4GmGm"),
     DIAMOND(108, 12, true, "_diamond.png", TileEntityDiamondShulkerBox.class, 184, 256, Collections.singleton("gemDiamond"), "GGGmPmGGG", "GGGG4Gmmm"),
-    COPPER(45, 9, false, "_copper.png", TileEntityCopperShulkerBox.class, 184, 184, Collections.singleton("ingotCopper"), "mmmmCmmmm"),
+    COPPER(45, 9, false, "_copper.png", TileEntityCopperShulkerBox.class, 184, 184, Collections.singleton("ingotCopper"), "mmmmSmmmm"),
     SILVER(72, 9, false, "_silver.png", TileEntitySilverShulkerBox.class, 184, 238, Collections.singleton("ingotSilver"), "mmmm3mmmm", "mGmG0GmGm"),
     CRYSTAL(108, 12, true, "_crystal.png", TileEntityCrystalShulkerBox.class, 238, 256, Collections.singleton("blockGlass"), "GGGGPGGGG"),
     OBSIDIAN(108, 12, false, "_obsidian.png", TileEntityObsidianShulkerBox.class, 238, 256, Collections.singleton("obsidian"), "mmmm2mmmm"),
@@ -53,7 +53,7 @@ public enum IronShulkerBoxType implements IStringSerializable
 
     public final int rowLength;
 
-    public final boolean tieredChest;
+    public final boolean tieredShulkerBox;
 
     public final String modelTexture;
 
@@ -70,13 +70,13 @@ public enum IronShulkerBoxType implements IStringSerializable
     private String breakTexture;
 
     //@formatter:off
-    IronShulkerBoxType(int size, int rowLength, boolean tieredChest, String modelTexture, Class<? extends TileEntityIronShulkerBox> clazz, int xSize, int ySize, Collection<String> mats, String... recipes)
+    IronShulkerBoxType(int size, int rowLength, boolean tieredShulkerBox, String modelTexture, Class<? extends TileEntityIronShulkerBox> clazz, int xSize, int ySize, Collection<String> mats, String... recipes)
     //@formatter:on
     {
         this.name = this.name().toLowerCase();
         this.size = size;
         this.rowLength = rowLength;
-        this.tieredChest = tieredChest;
+        this.tieredShulkerBox = tieredShulkerBox;
         this.modelTexture = modelTexture;
         this.clazz = clazz;
         this.xSize = xSize;
@@ -123,18 +123,18 @@ public enum IronShulkerBoxType implements IStringSerializable
 
         for (IronShulkerBoxType typ : values())
         {
-            generateRecipesForType(blockResult, previous, typ);
+            generateRecipesForType(blockResult, previous, typ, shulkerBox);
 
-            ItemStack chest = new ItemStack(blockResult, 1, typ.ordinal());
+            ItemStack newShulkerBox = new ItemStack(blockResult, 1, typ.ordinal());
 
-            if (typ.tieredChest)
+            if (typ.tieredShulkerBox)
             {
-                previous = chest;
+                previous = newShulkerBox;
             }
         }
     }
 
-    public static void generateRecipesForType(BlockIronShulkerBox blockResult, Object previousTier, IronShulkerBoxType type)
+    public static void generateRecipesForType(BlockIronShulkerBox blockResult, Object previousTier, IronShulkerBoxType type, BlockShulkerBox shulkerBox)
     {
         for (String recipe : type.recipes)
         {
@@ -147,14 +147,14 @@ public enum IronShulkerBoxType implements IStringSerializable
                 //@formatter:off
                 addRecipe(new ItemStack(blockResult, 1, type.ordinal()), recipeSplit,
                         'm', mainMaterial,
-                        'P', previousTier, /* previous tier of chest */
+                        'P', previousTier, /* previous tier of shulker box */
                         'G', "blockGlass",
-                        'C', "chestWood",
-                        '0', new ItemStack(blockResult, 1, 0), /* Iron Chest */
-                        '1', new ItemStack(blockResult, 1, 1), /* Gold Chest */
-                        '2', new ItemStack(blockResult, 1, 2), /* Diamond Chest */
-                        '3', new ItemStack(blockResult, 1, 3), /* Copper Chest */
-                        '4', new ItemStack(blockResult, 1, 4) /* Silver Chest */
+                        'S', shulkerBox,
+                        '0', new ItemStack(blockResult, 1, 0), /* Iron Shulker Box */
+                        '1', new ItemStack(blockResult, 1, 1), /* Gold Shulker Box */
+                        '2', new ItemStack(blockResult, 1, 2), /* Diamond Shulker Box */
+                        '3', new ItemStack(blockResult, 1, 3), /* Copper Shulker Box */
+                        '4', new ItemStack(blockResult, 1, 4) /* Silver Shulker Box */
                         );
                 //@formatter:on
             }
@@ -178,7 +178,7 @@ public enum IronShulkerBoxType implements IStringSerializable
 
     public static void addRecipe(ItemStack is, Object... parts)
     {
-        ShapedOreRecipe oreRecipe = new ShapedOreRecipe(is, parts);
+        IronShulkerBoxRecipe oreRecipe = new IronShulkerBoxRecipe(is, parts);
 
         GameRegistry.addRecipe(oreRecipe);
     }

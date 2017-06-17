@@ -20,9 +20,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class IronShulkerBoxColoring implements IRecipe
+public class IronShulkerBoxColoringRecipe implements IRecipe
 {
-    public IronShulkerBoxColoring()
+    public IronShulkerBoxColoringRecipe()
     {
     }
 
