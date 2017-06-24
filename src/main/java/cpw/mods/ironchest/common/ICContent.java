@@ -14,7 +14,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.blocks.chest.BlockIronChest;
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
@@ -109,8 +108,8 @@ public class ICContent
         // Shulkers Start
         setVanillaShulkerList();
 
-        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxColoringRecipe.class, Category.SHAPELESS, "after:forge:shapelessore");
-        RecipeSorter.register(IronChest.MOD_ID, IronShulkerBoxRecipe.class, Category.SHAPED, "after:forge:shapelessore");
+        RecipeSorter.register("ironchest:shulkerboxcoloring", IronShulkerBoxColoringRecipe.class, Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("ironchest:shulkerbox", IronShulkerBoxRecipe.class, Category.SHAPED, "after:forge:shapelessore");
 
         ShulkerBoxChangerType.buildItems();
 
