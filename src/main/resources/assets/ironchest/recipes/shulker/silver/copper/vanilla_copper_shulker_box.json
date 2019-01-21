@@ -16,11 +16,11 @@
             "item": "#COPPER"
         },
         "S": {
-            "item": "minecraft:gray_shulker_box"
+            "item": "minecraft:silver_shulker_box"
         }
     },
     "result": {
-        "item": "ironchest:iron_shulker_box_gray",
+        "item": "ironchest:iron_shulker_box_silver",
         "data": 3
     }
 }

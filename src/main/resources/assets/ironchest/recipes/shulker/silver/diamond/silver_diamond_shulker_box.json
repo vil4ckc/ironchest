@@ -19,12 +19,12 @@
             "item": "#GLASS"
         },
         "S": {
-            "item": "ironchest:iron_shulker_box_gray",
+            "item": "ironchest:iron_shulker_box_silver",
             "data": 4
         }
     },
     "result": {
-        "item": "ironchest:iron_shulker_box_gray",
+        "item": "ironchest:iron_shulker_box_silver",
         "data": 2
     }
 }
