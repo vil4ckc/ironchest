@@ -10,6 +10,10 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.blocks.chest;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.core.IronChestCreativeTabs;
 import cpw.mods.ironchest.common.tileentity.chest.TileEntityIronChest;
@@ -17,6 +21,7 @@ import cpw.mods.ironchest.common.util.BlockNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,9 +48,6 @@ import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockIronChest extends Block
 {
@@ -86,6 +88,12 @@ public class BlockIronChest extends Block
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
         return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Nullable
