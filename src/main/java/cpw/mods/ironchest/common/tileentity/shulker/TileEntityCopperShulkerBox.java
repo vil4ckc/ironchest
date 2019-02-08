@@ -14,6 +14,9 @@ import javax.annotation.Nullable;
 
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 
 public class TileEntityCopperShulkerBox extends TileEntityIronShulkerBox
 {
@@ -25,5 +28,10 @@ public class TileEntityCopperShulkerBox extends TileEntityIronShulkerBox
     public TileEntityCopperShulkerBox(@Nullable EnumDyeColor colorIn)
     {
         super(colorIn, IronShulkerBoxType.COPPER);
+    }
+
+    public static void registerFixesShulkerBox(DataFixer fixer)
+    {
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityCopperShulkerBox.class, new String[] { "Items" }));
     }
 }

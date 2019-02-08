@@ -10,15 +10,26 @@
  ******************************************************************************/
 package cpw.mods.ironchest;
 
-import java.util.Properties;
-
 import cpw.mods.ironchest.common.CommonProxy;
 import cpw.mods.ironchest.common.config.Config;
 import cpw.mods.ironchest.common.lib.BlockLists;
 import cpw.mods.ironchest.common.network.MessageCrystalChestSync;
 import cpw.mods.ironchest.common.network.MessageCrystalShulkerSync;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityCopperChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityCrystalChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityDiamondChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityDirtChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityGoldChest;
 import cpw.mods.ironchest.common.tileentity.chest.TileEntityIronChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityObsidianChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntitySilverChest;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityCopperShulkerBox;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityCrystalShulkerBox;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityDiamondShulkerBox;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityGoldShulkerBox;
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntityIronShulkerBox;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityObsidianShulkerBox;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntitySilverShulkerBox;
 import cpw.mods.ironchest.common.util.MissingMappingsHandler;
 import cpw.mods.ironchest.common.util.OcelotsSitOnChestsHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,6 +44,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.Properties;
 
 @Mod(modid = IronChest.MOD_ID, name = "Iron Chests", dependencies = "required-after:forge@[14.21.0.2359,)", acceptedMinecraftVersions = "[1.12, 1.13)")
 public class IronChest
@@ -90,6 +103,20 @@ public class IronChest
         CompoundDataFixer dataFixer = FMLCommonHandler.instance().getDataFixer();
 
         TileEntityIronChest.registerFixesChest(dataFixer);
+        TileEntityGoldChest.registerFixesChest(dataFixer);
+        TileEntityDiamondChest.registerFixesChest(dataFixer);
+        TileEntityCrystalChest.registerFixesChest(dataFixer);
+        TileEntitySilverChest.registerFixesChest(dataFixer);
+        TileEntityCopperChest.registerFixesChest(dataFixer);
+        TileEntityObsidianChest.registerFixesChest(dataFixer);
+        TileEntityDirtChest.registerFixesChest(dataFixer);
+
         TileEntityIronShulkerBox.registerFixesShulkerBox(dataFixer);
+        TileEntityGoldShulkerBox.registerFixesShulkerBox(dataFixer);
+        TileEntityDiamondShulkerBox.registerFixesShulkerBox(dataFixer);
+        TileEntityCrystalShulkerBox.registerFixesShulkerBox(dataFixer);
+        TileEntitySilverShulkerBox.registerFixesShulkerBox(dataFixer);
+        TileEntityCopperShulkerBox.registerFixesShulkerBox(dataFixer);
+        TileEntityObsidianShulkerBox.registerFixesShulkerBox(dataFixer);
     }
 }

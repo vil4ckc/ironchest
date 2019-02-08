@@ -11,11 +11,19 @@
 package cpw.mods.ironchest.common.tileentity.chest;
 
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
+import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 
 public class TileEntityDiamondChest extends TileEntityIronChest
 {
     public TileEntityDiamondChest()
     {
         super(IronChestType.DIAMOND);
+    }
+
+    public static void registerFixesChest(DataFixer fixer)
+    {
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDiamondChest.class, new String[] { "Items" }));
     }
 }

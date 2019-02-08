@@ -10,8 +10,6 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.blocks.chest;
 
-import javax.annotation.Nullable;
-
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.core.IronChestCreativeTabs;
 import cpw.mods.ironchest.common.tileentity.chest.TileEntityIronChest;
@@ -25,9 +23,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -42,6 +43,9 @@ import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockIronChest extends Block
 {
@@ -205,6 +209,9 @@ public class BlockIronChest extends Block
             tileentity.removeAdornments();
 
             InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
+            worldIn.updateComparatorOutputLevel(pos, this);
+
+            worldIn.removeTileEntity(pos);
         }
 
         super.breakBlock(worldIn, pos, state);
@@ -281,5 +288,26 @@ public class BlockIronChest extends Block
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         return tileentity != null && tileentity.receiveClientEvent(id, param);
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        Random rand = world instanceof World ? ((World) world).rand : RANDOM;
+
+        int count = quantityDropped(state, fortune, rand);
+        for (int i = 0; i < count; i++)
+        {
+            Item item = this.getItemDropped(state, rand, fortune);
+            if (item != Items.AIR)
+            {
+                ItemStack stack = new ItemStack(item, 1, this.damageDropped(state));
+                if (state.getValue(VARIANT_PROP) == IronChestType.DIRTCHEST9000)
+                {
+                    stack.setTagInfo("dirtchest", new NBTTagByte((byte) 1));
+                }
+                drops.add(stack);
+            }
+        }
     }
 }

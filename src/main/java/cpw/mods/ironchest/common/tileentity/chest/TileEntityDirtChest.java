@@ -6,6 +6,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 import net.minecraft.util.text.translation.I18n;
 
 @SuppressWarnings("deprecation")
@@ -47,5 +50,10 @@ public class TileEntityDirtChest extends TileEntityIronChest
         {
             this.getItems().set(0, ItemStack.EMPTY);
         }
+    }
+
+    public static void registerFixesChest(DataFixer fixer)
+    {
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDirtChest.class, new String[] { "Items" }));
     }
 }

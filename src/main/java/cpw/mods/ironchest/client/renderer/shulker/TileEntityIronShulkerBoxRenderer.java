@@ -49,14 +49,14 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
     }
 
     @Override
-    public void render(TileEntityIronShulkerBox te, double x, double y, double z, float partialTicks, int destroyStage, float partial)
+    public void render(TileEntityIronShulkerBox te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if (te == null || te.isInvalid())
         {
             return;
         }
 
-        EnumFacing facing = EnumFacing.UP;
+        EnumFacing enumfacing = EnumFacing.UP;
         IronShulkerBoxType type = te.getType();
 
         if (te.hasWorld())
@@ -65,7 +65,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
 
             if (iblockstate.getBlock() instanceof BlockIronShulkerBox)
             {
-                facing = te.getFacing();
+                enumfacing = te.getFacing();
                 type = iblockstate.getValue(BlockIronShulkerBox.VARIANT_PROP);
             }
         }
@@ -86,9 +86,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
         }
         else
         {
-            //@formatter:off
             ResourceLocation rs = new ResourceLocation("ironchest", "textures/model/shulker/" + te.getColor().getName() + "/shulker_" + te.getColor().getName() + type.modelTexture);
-            //@formatter:on
 
             this.bindTexture(rs);
         }
@@ -98,7 +96,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
 
         if (destroyStage < 0)
         {
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
         }
 
         GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
@@ -107,7 +105,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
         GlStateManager.scale(0.9995F, 0.9995F, 0.9995F);
         GlStateManager.translate(0.0F, -1.0F, 0.0F);
 
-        switch (facing)
+        switch (enumfacing)
         {
         case DOWN:
             GlStateManager.translate(0.0F, 2.0F, 0.0F);
