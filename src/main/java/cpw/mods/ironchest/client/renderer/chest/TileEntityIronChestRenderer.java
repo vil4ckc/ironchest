@@ -49,7 +49,7 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
             { 0.5F, 0.32F, 0.5F } };
     //@formatter:on
 
-    private static EntityItem customitem = new EntityItem(null);
+    private static EntityItem customItem;
 
     private static float halfPI = (float) (Math.PI / 2D);
 
@@ -183,8 +183,12 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) x, (float) y, (float) z);
 
-            customitem.setWorld(this.getWorld());
-            customitem.hoverStart = 0F;
+            if (customItem == null)
+            {
+                customItem = new EntityItem(this.getWorld());
+            }
+
+            customItem.hoverStart = 0F;
 
             for (ItemStack item : te.getTopItems())
             {
@@ -209,7 +213,7 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
                 GlStateManager.rotate(timeD, 0F, 1F, 0F);
                 GlStateManager.scale(blockScale, blockScale, blockScale);
 
-                customitem.setItem(item);
+                customItem.setItem(item);
 
                 if (this.itemRenderer == null)
                 {
@@ -235,7 +239,7 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
                     };
                 }
 
-                this.itemRenderer.doRender(customitem, 0D, 0D, 0D, 0F, partialTicks);
+                this.itemRenderer.doRender(customItem, 0D, 0D, 0D, 0F, partialTicks);
 
                 GlStateManager.popMatrix();
             }

@@ -40,7 +40,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
     private static float[][] shifts = { { 0.3F, 0.45F, 0.3F }, { 0.7F, 0.45F, 0.3F }, { 0.3F, 0.45F, 0.7F }, { 0.7F, 0.45F, 0.7F }, { 0.3F, 0.1F, 0.3F }, { 0.7F, 0.1F, 0.3F }, { 0.3F, 0.1F, 0.7F }, { 0.7F, 0.1F, 0.7F }, { 0.5F, 0.32F, 0.5F } };
     //@formatter:on
 
-    private static EntityItem customitem = new EntityItem(null);
+    private static EntityItem customItem;
 
     public TileEntityIronShulkerBoxRenderer()
     {
@@ -174,8 +174,12 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) x, (float) y, (float) z);
 
-            customitem.setWorld(this.getWorld());
-            customitem.hoverStart = 0F;
+            if (customItem == null)
+            {
+                customItem = new EntityItem(this.getWorld());
+            }
+
+            customItem.hoverStart = 0F;
 
             for (ItemStack item : te.getTopItems())
             {
@@ -200,7 +204,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
                 GlStateManager.rotate(timeD, 0F, 1F, 0F);
                 GlStateManager.scale(blockScale, blockScale, blockScale);
 
-                customitem.setItem(item);
+                customItem.setItem(item);
 
                 if (this.itemRenderer == null)
                 {
@@ -226,7 +230,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
                     };
                 }
 
-                this.itemRenderer.doRender(customitem, 0D, 0D, 0D, 0F, partialTicks);
+                this.itemRenderer.doRender(customItem, 0D, 0D, 0D, 0F, partialTicks);
 
                 GlStateManager.popMatrix();
             }
