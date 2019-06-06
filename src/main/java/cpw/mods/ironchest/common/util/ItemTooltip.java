@@ -10,12 +10,7 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.util;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +19,9 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ItemTooltip extends Item
@@ -58,7 +56,9 @@ public class ItemTooltip extends Item
     {
         List<String> list = Lists.newLinkedList();
         if (text == null)
+        {
             return list;
+        }
         int j = 0;
         int k;
         while ((k = text.indexOf("\\n", j)) >= 0)

@@ -37,13 +37,17 @@ public class ClientProxy extends CommonProxy
         for (IronChestType type : IronChestType.values())
         {
             if (type.clazz != null)
+            {
                 ClientRegistry.bindTileEntitySpecialRenderer(type.clazz, new TileEntityIronChestRenderer());
+            }
         }
 
         for (IronShulkerBoxType type : IronShulkerBoxType.values())
         {
             if (type.clazz != null)
+            {
                 ClientRegistry.bindTileEntitySpecialRenderer(type.clazz, new TileEntityIronShulkerBoxRenderer());
+            }
         }
     }
 

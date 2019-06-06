@@ -10,8 +10,6 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.items.chest;
 
-import java.util.Locale;
-
 import cpw.mods.ironchest.common.blocks.chest.BlockIronChest;
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import cpw.mods.ironchest.common.core.IronChestBlocks;
@@ -32,6 +30,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Locale;
+
 public class ItemChestChanger extends ItemTooltip
 {
     public final ChestChangerType type;
@@ -48,9 +48,7 @@ public class ItemChestChanger extends ItemTooltip
      * Called when a Block is right-clicked with this Item
      */
     @Override
-    //@formatter:off
     public EnumActionResult onItemUseFirst(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
-    //@formatter:on
     {
         ItemStack itemstack = playerIn.getHeldItem(hand);
 
@@ -79,8 +77,10 @@ public class ItemChestChanger extends ItemTooltip
         TileEntity te = worldIn.getTileEntity(pos);
         TileEntityIronChest newchest = new TileEntityIronChest();
 
-        NonNullList<ItemStack> chestContents = NonNullList.<ItemStack> withSize(27, ItemStack.EMPTY);
+        NonNullList<ItemStack> chestContents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
         EnumFacing chestFacing = EnumFacing.DOWN;
+        boolean hasCustomName = false;
+        String customName = "";
 
         if (te != null)
         {
@@ -88,6 +88,13 @@ public class ItemChestChanger extends ItemTooltip
             {
                 chestContents = ((TileEntityIronChest) te).getItems();
                 chestFacing = ((TileEntityIronChest) te).getFacing();
+
+                if (((TileEntityIronChest) te).hasCustomName())
+                {
+                    hasCustomName = true;
+                    customName = ((TileEntityIronChest) te).getName();
+                }
+
                 newchest = this.type.target.makeEntity();
 
                 if (newchest == null)
@@ -110,11 +117,17 @@ public class ItemChestChanger extends ItemTooltip
                     return EnumActionResult.PASS;
                 }
 
-                chestContents = NonNullList.<ItemStack> withSize(chest.getSizeInventory(), ItemStack.EMPTY);
+                chestContents = NonNullList.<ItemStack>withSize(chest.getSizeInventory(), ItemStack.EMPTY);
 
                 for (int i = 0; i < chestContents.size(); i++)
                 {
                     chestContents.set(i, chest.getStackInSlot(i));
+                }
+
+                if (chest.hasCustomName())
+                {
+                    hasCustomName = true;
+                    customName = chest.getName();
                 }
 
                 newchest = this.type.target.makeEntity();
@@ -144,6 +157,11 @@ public class ItemChestChanger extends ItemTooltip
         {
             ((TileEntityIronChest) te2).setContents(chestContents);
             ((TileEntityIronChest) te2).setFacing(chestFacing);
+
+            if (hasCustomName)
+            {
+                ((TileEntityIronChest) te2).setCustomName(customName);
+            }
         }
 
         if (!playerIn.capabilities.isCreativeMode)

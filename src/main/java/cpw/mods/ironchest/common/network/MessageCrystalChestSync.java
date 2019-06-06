@@ -11,6 +11,7 @@
 package cpw.mods.ironchest.common.network;
 
 import cpw.mods.ironchest.IronChest;
+import cpw.mods.ironchest.common.tileentity.chest.TileEntityCrystalChest;
 import cpw.mods.ironchest.common.tileentity.chest.TileEntityIronChest;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -26,14 +27,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class MessageCrystalChestSync implements IMessage
 {
     int dimension;
+
     BlockPos pos;
+
     private NonNullList<ItemStack> topStacks;
 
-    public MessageCrystalChestSync(TileEntityIronChest tile, NonNullList<ItemStack> stack)
+    public MessageCrystalChestSync(int dimensionId, BlockPos tilePos, NonNullList<ItemStack> stackList)
     {
-        this.dimension = tile.getWorld().provider.getDimension();
-        this.pos = tile.getPos();
-        this.topStacks = stack;
+        this.dimension = dimensionId;
+        this.pos = tilePos;
+        this.topStacks = stackList;
+    }
+
+    public MessageCrystalChestSync(TileEntityIronChest tile, NonNullList<ItemStack> stacklist)
+    {
+        this(tile.getWorld().provider.getDimension(), tile.getPos(), stacklist);
     }
 
     public MessageCrystalChestSync()
@@ -47,7 +55,7 @@ public class MessageCrystalChestSync implements IMessage
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
 
         int size = buf.readInt();
-        this.topStacks = NonNullList.<ItemStack> withSize(size, ItemStack.EMPTY);
+        this.topStacks = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 
         for (int i = 0; i < size; i++)
         {
@@ -83,8 +91,10 @@ public class MessageCrystalChestSync implements IMessage
             {
                 TileEntity tile = world.getTileEntity(message.pos);
 
-                if (tile instanceof TileEntityIronChest)
-                    ((TileEntityIronChest) tile).receiveMessageFromServer(message.topStacks);
+                if (tile instanceof TileEntityCrystalChest)
+                {
+                    ((TileEntityCrystalChest) tile).receiveMessageFromServer(message.topStacks);
+                }
             }
 
             return null;

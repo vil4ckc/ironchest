@@ -10,8 +10,6 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.util;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +17,8 @@ import net.minecraftforge.event.RegistryEvent.MissingMappings;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import javax.annotation.Nonnull;
 
 public class MissingMappingsHandler
 {

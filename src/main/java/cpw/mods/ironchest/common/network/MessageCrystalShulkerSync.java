@@ -11,6 +11,7 @@
 package cpw.mods.ironchest.common.network;
 
 import cpw.mods.ironchest.IronChest;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityCrystalShulkerBox;
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntityIronShulkerBox;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -31,11 +32,16 @@ public class MessageCrystalShulkerSync implements IMessage
 
     private NonNullList<ItemStack> topStacks;
 
-    public MessageCrystalShulkerSync(TileEntityIronShulkerBox tile, NonNullList<ItemStack> stack)
+    public MessageCrystalShulkerSync(int dimensionId, BlockPos tilePos, NonNullList<ItemStack> stackList)
     {
-        this.dimension = tile.getWorld().provider.getDimension();
-        this.pos = tile.getPos();
-        this.topStacks = stack;
+        this.dimension = dimensionId;
+        this.pos = tilePos;
+        this.topStacks = stackList;
+    }
+
+    public MessageCrystalShulkerSync(TileEntityIronShulkerBox tile, NonNullList<ItemStack> stacklist)
+    {
+        this(tile.getWorld().provider.getDimension(), tile.getPos(), stacklist);
     }
 
     public MessageCrystalShulkerSync()
@@ -49,7 +55,7 @@ public class MessageCrystalShulkerSync implements IMessage
         this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
 
         int size = buf.readInt();
-        this.topStacks = NonNullList.<ItemStack> withSize(size, ItemStack.EMPTY);
+        this.topStacks = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 
         for (int i = 0; i < size; i++)
         {
@@ -85,8 +91,10 @@ public class MessageCrystalShulkerSync implements IMessage
             {
                 TileEntity tile = world.getTileEntity(message.pos);
 
-                if (tile instanceof TileEntityIronShulkerBox)
-                    ((TileEntityIronShulkerBox) tile).receiveMessageFromServer(message.topStacks);
+                if (tile instanceof TileEntityCrystalShulkerBox)
+                {
+                    ((TileEntityCrystalShulkerBox) tile).receiveMessageFromServer(message.topStacks);
+                }
             }
 
             return null;

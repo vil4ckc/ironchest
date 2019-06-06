@@ -10,18 +10,10 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.tileentity.shulker;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import cpw.mods.ironchest.common.gui.shulker.ContainerIronShulkerBox;
 import cpw.mods.ironchest.common.lib.ICShulkerInventoryHandler;
-import cpw.mods.ironchest.common.network.MessageCrystalShulkerSync;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.material.EnumPushReaction;
@@ -50,11 +42,13 @@ import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements ITickable, ISidedInventory
 {
@@ -63,20 +57,11 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     /** Shulker Box Contents */
     private NonNullList<ItemStack> items;
 
-    /** Crystal Shulker Boxes top stacks */
-    private NonNullList<ItemStack> topStacks;
-
     /** Direction Shulker ox is facing */
     private EnumFacing facing;
 
-    /** If the inventory got touched */
-    private boolean inventoryTouched;
-
     /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
-
-    /** If the inventory had items */
-    private boolean hadStuff;
 
     private boolean hasBeenCleared;
 
@@ -115,8 +100,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
         this.SLOTS = new int[typeIn.size];
 
-        this.items = NonNullList.<ItemStack> withSize(typeIn.size, ItemStack.EMPTY);
-        this.topStacks = NonNullList.<ItemStack> withSize(8, ItemStack.EMPTY);
+        this.items = NonNullList.withSize(typeIn.size, ItemStack.EMPTY);
 
         this.animationStatus = AnimationStatus.CLOSED;
         this.color = colorIn;
@@ -128,7 +112,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
     public void setContents(NonNullList<ItemStack> contents)
     {
-        this.items = NonNullList.<ItemStack> withSize(this.getType().size, ItemStack.EMPTY);
+        this.items = NonNullList.withSize(this.getType().size, ItemStack.EMPTY);
 
         for (int i = 0; i < contents.size(); i++)
         {
@@ -137,8 +121,6 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
                 this.getItems().set(i, contents.get(i));
             }
         }
-
-        this.inventoryTouched = true;
     }
 
     @Override
@@ -172,9 +154,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     @Override
     public ItemStack getStackInSlot(int index)
     {
-        this.fillWithLoot((EntityPlayer) null);
-
-        this.inventoryTouched = true;
+        this.fillWithLoot(null);
 
         return this.getItems().get(index);
     }
@@ -183,110 +163,6 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     public void markDirty()
     {
         super.markDirty();
-
-        this.sortTopStacks();
-    }
-
-    protected void sortTopStacks()
-    {
-        if (!this.getType().isTransparent() || (this.world != null && this.world.isRemote))
-        {
-            return;
-        }
-
-        NonNullList<ItemStack> tempCopy = NonNullList.<ItemStack> withSize(this.getSizeInventory(), ItemStack.EMPTY);
-
-        boolean hasStuff = false;
-
-        int compressedIdx = 0;
-
-        mainLoop:
-        for (int i = 0; i < this.getSizeInventory(); i++)
-        {
-            ItemStack itemStack = this.getItems().get(i);
-
-            if (!itemStack.isEmpty())
-            {
-                for (int j = 0; j < compressedIdx; j++)
-                {
-                    ItemStack tempCopyStack = tempCopy.get(j);
-
-                    if (ItemStack.areItemsEqualIgnoreDurability(tempCopyStack, itemStack))
-                    {
-                        if (itemStack.getCount() != tempCopyStack.getCount())
-                        {
-                            tempCopyStack.grow(itemStack.getCount());
-                        }
-
-                        continue mainLoop;
-                    }
-                }
-
-                tempCopy.set(compressedIdx, itemStack.copy());
-
-                compressedIdx++;
-
-                hasStuff = true;
-            }
-        }
-
-        if (!hasStuff && this.hadStuff)
-        {
-            this.hadStuff = false;
-
-            for (int i = 0; i < this.getTopItems().size(); i++)
-            {
-                this.getTopItems().set(i, ItemStack.EMPTY);
-            }
-
-            return;
-        }
-
-        this.hadStuff = true;
-
-        Collections.sort(tempCopy, new Comparator<ItemStack>()
-        {
-            @Override
-            public int compare(ItemStack stack1, ItemStack stack2)
-            {
-                if (stack1.isEmpty())
-                {
-                    return 1;
-                }
-                else if (stack2.isEmpty())
-                {
-                    return -1;
-                }
-                else
-                {
-                    return stack2.getCount() - stack1.getCount();
-                }
-            }
-        });
-
-        int p = 0;
-
-        for (ItemStack element : tempCopy)
-        {
-            if (!element.isEmpty() && element.getCount() > 0)
-            {
-                if (p == this.getTopItems().size())
-                {
-                    break;
-                }
-
-                this.getTopItems().set(p, element);
-
-                p++;
-            }
-        }
-
-        for (int i = p; i < this.getTopItems().size(); i++)
-        {
-            this.getTopItems().set(i, ItemStack.EMPTY);
-        }
-
-        sendTopStacksPacket();
     }
 
     /**
@@ -316,7 +192,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
     public void loadFromNbt(NBTTagCompound compound)
     {
-        this.items = NonNullList.<ItemStack> withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         if (!this.checkLootAndRead(compound) && compound.hasKey("Items", 9))
         {
@@ -329,8 +205,6 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
         }
 
         this.facing = EnumFacing.VALUES[compound.getByte("facing")];
-
-        this.sortTopStacks();
     }
 
     public NBTTagCompound saveToNbt(NBTTagCompound compound)
@@ -384,13 +258,6 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
             this.world.addBlockEvent(this.pos, this.getBlockType(), 3, ((this.openCount << 3) & 0xF8) | (this.facing.ordinal() & 0x7));
         }
 
-        if (!this.world.isRemote && this.inventoryTouched)
-        {
-            this.inventoryTouched = false;
-
-            this.sortTopStacks();
-        }
-
         this.ticksSinceSync++;
     }
 
@@ -400,32 +267,32 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
         switch (this.animationStatus)
         {
-        case CLOSED:
-            this.progress = 0.0F;
-            break;
-        case OPENING:
-            this.progress += 0.1F;
-
-            if (this.progress >= 1.0F)
-            {
-                this.moveCollidedEntities();
-                this.animationStatus = AnimationStatus.OPENED;
-                this.progress = 1.0F;
-            }
-
-            break;
-        case CLOSING:
-            this.progress -= 0.1F;
-
-            if (this.progress <= 0.0F)
-            {
-                this.animationStatus = AnimationStatus.CLOSED;
+            case CLOSED:
                 this.progress = 0.0F;
-            }
+                break;
+            case OPENING:
+                this.progress += 0.1F;
 
-            break;
-        case OPENED:
-            this.progress = 1.0F;
+                if (this.progress >= 1.0F)
+                {
+                    this.moveCollidedEntities();
+                    this.animationStatus = AnimationStatus.OPENED;
+                    this.progress = 1.0F;
+                }
+
+                break;
+            case CLOSING:
+                this.progress -= 0.1F;
+
+                if (this.progress <= 0.0F)
+                {
+                    this.animationStatus = AnimationStatus.CLOSED;
+                    this.progress = 0.0F;
+                }
+
+                break;
+            case OPENED:
+                this.progress = 1.0F;
         }
     }
 
@@ -461,7 +328,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
         {
             EnumFacing enumfacing = this.getFacing();
             AxisAlignedBB axisalignedbb = this.getTopBoundingBox(enumfacing).offset(this.pos);
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity((Entity) null, axisalignedbb);
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb);
 
             if (!list.isEmpty())
             {
@@ -478,49 +345,47 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
                         switch (enumfacing.getAxis())
                         {
-                        case X:
+                            case X:
 
-                            if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
-                            {
-                                d0 = axisalignedbb.maxX - axisalignedbb1.minX;
-                            }
-                            else
-                            {
-                                d0 = axisalignedbb1.maxX - axisalignedbb.minX;
-                            }
+                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
+                                {
+                                    d0 = axisalignedbb.maxX - axisalignedbb1.minX;
+                                }
+                                else
+                                {
+                                    d0 = axisalignedbb1.maxX - axisalignedbb.minX;
+                                }
 
-                            d0 = d0 + 0.01D;
-                            break;
-                        case Y:
+                                d0 = d0 + 0.01D;
+                                break;
+                            case Y:
 
-                            if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
-                            {
-                                d1 = axisalignedbb.maxY - axisalignedbb1.minY;
-                            }
-                            else
-                            {
-                                d1 = axisalignedbb1.maxY - axisalignedbb.minY;
-                            }
+                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
+                                {
+                                    d1 = axisalignedbb.maxY - axisalignedbb1.minY;
+                                }
+                                else
+                                {
+                                    d1 = axisalignedbb1.maxY - axisalignedbb.minY;
+                                }
 
-                            d1 = d1 + 0.01D;
-                            break;
-                        case Z:
+                                d1 = d1 + 0.01D;
+                                break;
+                            case Z:
 
-                            if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
-                            {
-                                d2 = axisalignedbb.maxZ - axisalignedbb1.minZ;
-                            }
-                            else
-                            {
-                                d2 = axisalignedbb1.maxZ - axisalignedbb.minZ;
-                            }
+                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
+                                {
+                                    d2 = axisalignedbb.maxZ - axisalignedbb1.minZ;
+                                }
+                                else
+                                {
+                                    d2 = axisalignedbb1.maxZ - axisalignedbb.minZ;
+                                }
 
-                            d2 = d2 + 0.01D;
+                                d2 = d2 + 0.01D;
                         }
 
-                        //@formatter:off
                         entity.move(MoverType.SHULKER_BOX, d0 * enumfacing.getFrontOffsetX(), d1 * enumfacing.getFrontOffsetY(), d2 * enumfacing.getFrontOffsetZ());
-                        //@formatter:on
                     }
                 }
             }
@@ -582,9 +447,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
             if (this.openCount == 1)
             {
-                //@formatter:off
-                this.world.playSound((EntityPlayer) null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-                //@formatter:on
+                this.world.playSound(null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
         }
     }
@@ -600,9 +463,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
 
             if (this.openCount <= 0)
             {
-                //@formatter:off
-                this.world.playSound((EntityPlayer) null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
-                //@formatter:on
+                this.world.playSound(null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
         }
     }
@@ -634,34 +495,6 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
         }
     }
 
-    public NonNullList<ItemStack> buildItemStackDataList()
-    {
-        if (this.getType().isTransparent())
-        {
-            NonNullList<ItemStack> sortList = NonNullList.<ItemStack> withSize(this.getTopItems().size(), ItemStack.EMPTY);
-
-            int pos = 0;
-
-            for (ItemStack is : this.topStacks)
-            {
-                if (!is.isEmpty())
-                {
-                    sortList.set(pos, is);
-                }
-                else
-                {
-                    sortList.set(pos, ItemStack.EMPTY);
-                }
-
-                pos++;
-            }
-
-            return sortList;
-        }
-
-        return NonNullList.<ItemStack> withSize(this.getTopItems().size(), ItemStack.EMPTY);
-    }
-
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
     {
@@ -686,7 +519,19 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     public NBTTagCompound getUpdateTag()
     {
         NBTTagCompound compound = super.getUpdateTag();
+
+        if (!this.checkLootAndWrite(compound))
+        {
+            ItemStackHelper.saveAllItems(compound, this.items, false);
+        }
+
         compound.setByte("facing", (byte) this.facing.ordinal());
+
+        if (this.hasCustomName())
+        {
+            compound.setString("CustomName", this.customName);
+        }
+
         return compound;
     }
 
@@ -694,11 +539,6 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     public NonNullList<ItemStack> getItems()
     {
         return this.items;
-    }
-
-    public NonNullList<ItemStack> getTopItems()
-    {
-        return this.topStacks;
     }
 
     @Override
@@ -718,7 +558,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
-        return SLOTS;
+        return this.SLOTS;
     }
 
     /**
@@ -821,27 +661,14 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
         return ItemStack.EMPTY;
     }
 
-    protected void sendTopStacksPacket()
+    public enum AnimationStatus
     {
-        NonNullList<ItemStack> stacks = this.buildItemStackDataList();
-        //@formatter:off
-        IronChest.packetHandler.sendToAllAround(new MessageCrystalShulkerSync(this, stacks), new TargetPoint(world.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), 128));
-        //@formatter:on
-    }
-
-    public void receiveMessageFromServer(NonNullList<ItemStack> topStacks)
-    {
-        this.topStacks = topStacks;
-    }
-
-    public static enum AnimationStatus
-    {
-        CLOSED, OPENING, OPENED, CLOSING;
+        CLOSED, OPENING, OPENED, CLOSING
     }
 
     public static void registerFixesShulkerBox(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityIronShulkerBox.class, new String[] { "Items" }));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityIronShulkerBox.class, "Items"));
     }
 
     private IItemHandler itemHandler;
@@ -857,7 +684,9 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return (T) (itemHandler == null ? (itemHandler = createUnSidedHandler()) : itemHandler);
+        {
+            return (T) (this.itemHandler == null ? (this.itemHandler = this.createUnSidedHandler()) : this.itemHandler);
+        }
         return super.getCapability(capability, facing);
     }
 

@@ -8,13 +8,13 @@
 
 package cpw.mods.ironchest.common.lib;
 
-import javax.annotation.Nonnull;
-
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntityIronShulkerBox;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
+
+import javax.annotation.Nonnull;
 
 public class ICShulkerInventoryHandler implements IItemHandlerModifiable
 {
@@ -41,29 +41,36 @@ public class ICShulkerInventoryHandler implements IItemHandlerModifiable
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
     {
         if (stack.isEmpty())
+        {
             return stack;
+        }
+
         stack = stack.copy();
 
-        if (!inv.isItemValidForSlot(slot, stack))
+        if (!this.inv.isItemValidForSlot(slot, stack))
+        {
             return stack;
+        }
 
-        int offsetSlot = slot;
-        ItemStack currentStack = inv.getItems().get(offsetSlot);
+        ItemStack currentStack = this.inv.getItems().get(slot);
 
         if (currentStack.isEmpty())
         {
-            int accepted = Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit());
+            int accepted = Math.min(stack.getMaxStackSize(), this.inv.getInventoryStackLimit());
+
             if (accepted < stack.getCount())
             {
                 if (!simulate)
                 {
-                    inv.getItems().set(offsetSlot, stack.splitStack(accepted));
-                    inv.markDirty();
+                    this.inv.getItems().set(slot, stack.splitStack(accepted));
+                    this.inv.markDirty();
+
                     return stack;
                 }
                 else
                 {
                     stack.shrink(accepted);
+
                     return stack;
                 }
             }
@@ -71,18 +78,21 @@ public class ICShulkerInventoryHandler implements IItemHandlerModifiable
             {
                 if (!simulate)
                 {
-                    inv.getItems().set(offsetSlot, stack);
-                    inv.markDirty();
+                    this.inv.getItems().set(slot, stack);
+                    this.inv.markDirty();
                 }
+
                 return ItemStack.EMPTY;
             }
         }
         else
         {
-            int accepted = Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit()) - currentStack.getCount();
+            int accepted = Math.min(stack.getMaxStackSize(), this.inv.getInventoryStackLimit()) - currentStack.getCount();
 
             if (accepted <= 0 || !ItemHandlerHelper.canItemStacksStack(stack, currentStack))
+            {
                 return stack;
+            }
 
             if (accepted < stack.getCount())
             {
@@ -90,13 +100,15 @@ public class ICShulkerInventoryHandler implements IItemHandlerModifiable
                 {
                     ItemStack newStack = stack.splitStack(accepted);
                     newStack.grow(currentStack.getCount());
-                    inv.getItems().set(offsetSlot, newStack);
-                    inv.markDirty();
+                    this.inv.getItems().set(slot, newStack);
+                    this.inv.markDirty();
+
                     return stack;
                 }
                 else
                 {
                     stack.shrink(accepted);
+
                     return stack;
                 }
             }
@@ -106,9 +118,10 @@ public class ICShulkerInventoryHandler implements IItemHandlerModifiable
                 {
                     ItemStack newStack = stack.copy();
                     newStack.grow(currentStack.getCount());
-                    inv.getItems().set(offsetSlot, newStack);
-                    inv.markDirty();
+                    this.inv.getItems().set(slot, newStack);
+                    this.inv.markDirty();
                 }
+
                 return ItemStack.EMPTY;
             }
         }
@@ -118,45 +131,55 @@ public class ICShulkerInventoryHandler implements IItemHandlerModifiable
     public ItemStack extractItem(int slot, int amount, boolean simulate)
     {
         if (amount == 0)
+        {
             return ItemStack.EMPTY;
+        }
 
-        int offsetSlot = slot;
-        ItemStack currentStack = inv.getItems().get(offsetSlot);
+        ItemStack currentStack = this.inv.getItems().get(slot);
 
         if (currentStack.isEmpty())
+        {
             return ItemStack.EMPTY;
+        }
 
         int extracted = Math.min(currentStack.getCount(), amount);
 
         ItemStack copy = currentStack.copy();
         copy.setCount(extracted);
+
         if (!simulate)
         {
             if (extracted < currentStack.getCount())
+            {
                 currentStack.shrink(extracted);
+            }
             else
+            {
                 currentStack = ItemStack.EMPTY;
-            inv.getItems().set(offsetSlot, currentStack);
-            inv.markDirty();
+            }
+
+            this.inv.getItems().set(slot, currentStack);
+            this.inv.markDirty();
         }
+
         return copy;
     }
 
     @Override
     public int getSlotLimit(int slot)
     {
-        return getInv().getInventoryStackLimit();
+        return this.getInv().getInventoryStackLimit();
     }
 
     @Override
     public void setStackInSlot(int slot, @Nonnull ItemStack stack)
     {
-        inv.getItems().set(slot, stack);
-        inv.markDirty();
+        this.inv.getItems().set(slot, stack);
+        this.inv.markDirty();
     }
 
     public IInventory getInv()
     {
-        return inv;
+        return this.inv;
     }
 }

@@ -27,8 +27,6 @@ public class ValidatingShulkerBoxSlot extends Slot
     @Override
     public boolean isItemValid(ItemStack stack)
     {
-        //@formatter:off
         return !(Block.getBlockFromItem(stack.getItem()) instanceof BlockIronShulkerBox) && !(Block.getBlockFromItem(stack.getItem()) instanceof BlockShulkerBox);
-        //@formatter:on
     }
 }

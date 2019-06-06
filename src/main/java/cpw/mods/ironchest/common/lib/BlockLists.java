@@ -1,9 +1,6 @@
 package cpw.mods.ironchest.common.lib;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import cpw.mods.ironchest.common.core.IronChestBlocks;
 import cpw.mods.ironchest.common.util.BehaviorDispenseIronShulkerBox;
 import net.minecraft.block.Block;
@@ -11,6 +8,8 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
+
+import java.util.List;
 
 public class BlockLists
 {

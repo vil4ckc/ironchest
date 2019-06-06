@@ -82,20 +82,20 @@ public enum IronShulkerBoxType implements IStringSerializable
         {
             switch (this)
             {
-            case OBSIDIAN:
-            {
-                this.breakTexture = "minecraft:blocks/obsidian";
-                break;
-            }
-            case VANILLA:
-            {
-                this.breakTexture = "minecraft:blocks/planks_oak";
-                break;
-            }
-            default:
-            {
-                this.breakTexture = "ironchest:blocks/" + this.getName() + "break";
-            }
+                case OBSIDIAN:
+                {
+                    this.breakTexture = "minecraft:blocks/obsidian";
+                    break;
+                }
+                case VANILLA:
+                {
+                    this.breakTexture = "minecraft:blocks/planks_oak";
+                    break;
+                }
+                default:
+                {
+                    this.breakTexture = "ironchest:blocks/" + this.getName() + "break";
+                }
             }
         }
 
@@ -131,22 +131,22 @@ public enum IronShulkerBoxType implements IStringSerializable
     {
         switch (this)
         {
-        case IRON:
-            return new TileEntityIronShulkerBox(colorIn);
-        case GOLD:
-            return new TileEntityGoldShulkerBox(colorIn);
-        case DIAMOND:
-            return new TileEntityDiamondShulkerBox(colorIn);
-        case COPPER:
-            return new TileEntityCopperShulkerBox(colorIn);
-        case SILVER:
-            return new TileEntitySilverShulkerBox(colorIn);
-        case CRYSTAL:
-            return new TileEntityCrystalShulkerBox(colorIn);
-        case OBSIDIAN:
-            return new TileEntityObsidianShulkerBox(colorIn);
-        default:
-            return null;
+            case IRON:
+                return new TileEntityIronShulkerBox(colorIn);
+            case GOLD:
+                return new TileEntityGoldShulkerBox(colorIn);
+            case DIAMOND:
+                return new TileEntityDiamondShulkerBox(colorIn);
+            case COPPER:
+                return new TileEntityCopperShulkerBox(colorIn);
+            case SILVER:
+                return new TileEntitySilverShulkerBox(colorIn);
+            case CRYSTAL:
+                return new TileEntityCrystalShulkerBox(colorIn);
+            case OBSIDIAN:
+                return new TileEntityObsidianShulkerBox(colorIn);
+            default:
+                return null;
         }
     }
 }

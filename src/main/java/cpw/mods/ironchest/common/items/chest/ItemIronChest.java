@@ -10,12 +10,12 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.items.chest;
 
-import java.util.Locale;
-
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import java.util.Locale;
 
 public class ItemIronChest extends ItemBlock
 {

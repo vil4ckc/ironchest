@@ -10,10 +10,6 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.blocks.shulker;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.core.IronChestBlocks;
 import cpw.mods.ironchest.common.core.IronChestCreativeTabs;
@@ -49,6 +45,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class BlockIronShulkerBox extends Block
@@ -390,7 +389,7 @@ public class BlockIronShulkerBox extends Block
             {
                 if (nbttagcompound1.hasKey("ShulkerBoxSize", 3))
                 {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack> withSize(nbttagcompound1.getInteger("ShulkerBoxSize"), ItemStack.EMPTY);
+                    NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(nbttagcompound1.getInteger("ShulkerBoxSize"), ItemStack.EMPTY);
                     ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
                     int i = 0;
                     int j = 0;
@@ -418,7 +417,7 @@ public class BlockIronShulkerBox extends Block
                 }
                 else
                 {
-                    NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack> withSize(27, ItemStack.EMPTY);
+                    NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
                     ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
                     int i = 0;
                     int j = 0;
@@ -493,39 +492,39 @@ public class BlockIronShulkerBox extends Block
     {
         switch (colorIn)
         {
-        case WHITE:
-            return IronChestBlocks.ironShulkerBoxWhiteBlock;
-        case ORANGE:
-            return IronChestBlocks.ironShulkerBoxOrangeBlock;
-        case MAGENTA:
-            return IronChestBlocks.ironShulkerBoxMagentaBlock;
-        case LIGHT_BLUE:
-            return IronChestBlocks.ironShulkerBoxLightBlueBlock;
-        case YELLOW:
-            return IronChestBlocks.ironShulkerBoxYellowBlock;
-        case LIME:
-            return IronChestBlocks.ironShulkerBoxLimeBlock;
-        case PINK:
-            return IronChestBlocks.ironShulkerBoxPinkBlock;
-        case GRAY:
-            return IronChestBlocks.ironShulkerBoxGrayBlock;
-        case SILVER:
-            return IronChestBlocks.ironShulkerBoxSilverBlock;
-        case CYAN:
-            return IronChestBlocks.ironShulkerBoxCyanBlock;
-        case PURPLE:
-        default:
-            return IronChestBlocks.ironShulkerBoxPurpleBlock;
-        case BLUE:
-            return IronChestBlocks.ironShulkerBoxBlueBlock;
-        case BROWN:
-            return IronChestBlocks.ironShulkerBoxBrownBlock;
-        case GREEN:
-            return IronChestBlocks.ironShulkerBoxGreenBlock;
-        case RED:
-            return IronChestBlocks.ironShulkerBoxRedBlock;
-        case BLACK:
-            return IronChestBlocks.ironShulkerBoxBlackBlock;
+            case WHITE:
+                return IronChestBlocks.ironShulkerBoxWhiteBlock;
+            case ORANGE:
+                return IronChestBlocks.ironShulkerBoxOrangeBlock;
+            case MAGENTA:
+                return IronChestBlocks.ironShulkerBoxMagentaBlock;
+            case LIGHT_BLUE:
+                return IronChestBlocks.ironShulkerBoxLightBlueBlock;
+            case YELLOW:
+                return IronChestBlocks.ironShulkerBoxYellowBlock;
+            case LIME:
+                return IronChestBlocks.ironShulkerBoxLimeBlock;
+            case PINK:
+                return IronChestBlocks.ironShulkerBoxPinkBlock;
+            case GRAY:
+                return IronChestBlocks.ironShulkerBoxGrayBlock;
+            case SILVER:
+                return IronChestBlocks.ironShulkerBoxSilverBlock;
+            case CYAN:
+                return IronChestBlocks.ironShulkerBoxCyanBlock;
+            case PURPLE:
+            default:
+                return IronChestBlocks.ironShulkerBoxPurpleBlock;
+            case BLUE:
+                return IronChestBlocks.ironShulkerBoxBlueBlock;
+            case BROWN:
+                return IronChestBlocks.ironShulkerBoxBrownBlock;
+            case GREEN:
+                return IronChestBlocks.ironShulkerBoxGreenBlock;
+            case RED:
+                return IronChestBlocks.ironShulkerBoxRedBlock;
+            case BLACK:
+                return IronChestBlocks.ironShulkerBoxBlackBlock;
         }
     }
 

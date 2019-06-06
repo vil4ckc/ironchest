@@ -10,14 +10,14 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.util;
 
-import java.util.HashSet;
-
 import cpw.mods.ironchest.common.ai.IronChestAIOcelotSit;
 import net.minecraft.entity.ai.EntityAIOcelotSit;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.HashSet;
 
 public class OcelotsSitOnChestsHandler
 {

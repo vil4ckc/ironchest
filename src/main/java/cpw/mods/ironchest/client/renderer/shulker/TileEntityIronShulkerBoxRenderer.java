@@ -16,6 +16,7 @@ import com.google.common.primitives.SignedBytes;
 
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
+import cpw.mods.ironchest.common.tileentity.shulker.TileEntityCrystalShulkerBox;
 import cpw.mods.ironchest.common.tileentity.shulker.TileEntityIronShulkerBox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -165,7 +166,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
             float blockScale = 0.70F;
             float timeD = (float) (360D * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL) - partialTicks;
 
-            if (te.getTopItems().get(1).isEmpty())
+            if (((TileEntityCrystalShulkerBox) te).getTopItems().get(1).isEmpty())
             {
                 shift = 8;
                 blockScale = 0.85F;
@@ -181,7 +182,7 @@ public class TileEntityIronShulkerBoxRenderer extends TileEntitySpecialRenderer<
 
             customItem.hoverStart = 0F;
 
-            for (ItemStack item : te.getTopItems())
+            for (ItemStack item : ((TileEntityCrystalShulkerBox) te).getTopItems())
             {
                 if (shift > shifts.length || shift > 8)
                 {

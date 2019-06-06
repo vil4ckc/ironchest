@@ -10,10 +10,7 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.crafting.recipe;
 
-import javax.annotation.Nonnull;
-
 import com.google.gson.JsonObject;
-
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import net.minecraft.block.Block;
@@ -27,6 +24,8 @@ import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import javax.annotation.Nonnull;
 
 public class ShulkerBoxRecipeFactory implements IRecipeFactory
 {
