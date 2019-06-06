@@ -25,15 +25,18 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -45,6 +48,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
+import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -198,6 +202,11 @@ public class BlockIronChest extends Block
             teic.setFacing(placer.getHorizontalFacing().getOpposite());
 
             worldIn.notifyBlockUpdate(pos, state, state, 3);
+
+            if (stack.hasDisplayName())
+            {
+                teic.setCustomName(stack.getDisplayName());
+            }
         }
     }
 
@@ -302,20 +311,68 @@ public class BlockIronChest extends Block
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         Random rand = world instanceof World ? ((World) world).rand : RANDOM;
+        TileEntity tileentity = world.getTileEntity(pos);
 
         int count = quantityDropped(state, fortune, rand);
+
         for (int i = 0; i < count; i++)
         {
             Item item = this.getItemDropped(state, rand, fortune);
+
             if (item != Items.AIR)
             {
                 ItemStack stack = new ItemStack(item, 1, this.damageDropped(state));
+
+                if (tileentity instanceof IWorldNameable && ((IWorldNameable) tileentity).hasCustomName())
+                {
+                    stack.setStackDisplayName(((IWorldNameable) tileentity).getName());
+                }
+
                 if (state.getValue(VARIANT_PROP) == IronChestType.DIRTCHEST9000)
                 {
                     stack.setTagInfo("dirtchest", new NBTTagByte((byte) 1));
                 }
+
                 drops.add(stack);
             }
+        }
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
+    {
+        if (te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName())
+        {
+            player.addStat(StatList.getBlockStats(this));
+            player.addExhaustion(0.005F);
+
+            if (worldIn.isRemote)
+            {
+                return;
+            }
+
+            int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+            Item item = this.getItemDropped(state, worldIn.rand, i);
+
+            if (item == Items.AIR)
+            {
+                return;
+            }
+
+            ItemStack itemstack = new ItemStack(item, 1, this.damageDropped(state));
+
+            if (state.getValue(VARIANT_PROP) == IronChestType.DIRTCHEST9000)
+            {
+                itemstack.setTagInfo("dirtchest", new NBTTagByte((byte) 1));
+            }
+
+            itemstack.setStackDisplayName(((IWorldNameable) te).getName());
+
+            spawnAsEntity(worldIn, pos, itemstack);
+        }
+        else
+        {
+            super.harvestBlock(worldIn, player, pos, state, (TileEntity) null, stack);
         }
     }
 }

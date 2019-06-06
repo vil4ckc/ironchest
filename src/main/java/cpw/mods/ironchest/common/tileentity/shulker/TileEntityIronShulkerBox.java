@@ -797,22 +797,22 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     public ItemStack getDrop(IBlockState state, boolean inBreakBlock)
     {
         BlockIronShulkerBox block = (BlockIronShulkerBox) state.getBlock();
-        if (!isCleared() && (!inBreakBlock || shouldDropInBreakBlock()))
+        if (!this.isCleared() && (!inBreakBlock || this.shouldDropInBreakBlock()))
         {
-            if (!beenUpgraded())
+            if (!this.beenUpgraded())
             {
                 ItemStack itemstack = new ItemStack(Item.getItemFromBlock(block), 1, state.getValue(BlockIronShulkerBox.VARIANT_PROP).ordinal());
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 
-                nbttagcompound.setTag("BlockEntityTag", saveToNbt(nbttagcompound1));
+                nbttagcompound.setTag("BlockEntityTag", this.saveToNbt(nbttagcompound1));
                 itemstack.setTagCompound(nbttagcompound);
 
-                if (hasCustomName())
+                if (this.hasCustomName())
                 {
-                    itemstack.setStackDisplayName(getName());
+                    itemstack.setStackDisplayName(this.getName());
 
-                    setCustomName("");
+                    this.setCustomName("");
                 }
 
                 return itemstack;
