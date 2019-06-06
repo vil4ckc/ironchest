@@ -124,7 +124,7 @@ public class BlockIronChest extends Block
             return true;
         }
 
-        if (worldIn.isSideSolid(pos.add(0, 1, 0), EnumFacing.DOWN))
+        if (worldIn.getBlockState(pos.up()).doesSideBlockChestOpening(worldIn, pos.up(), EnumFacing.DOWN))
         {
             return true;
         }
