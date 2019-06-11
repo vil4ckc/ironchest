@@ -81,6 +81,8 @@ public class ItemChestChanger extends ItemTooltip
 
         NonNullList<ItemStack> chestContents = NonNullList.<ItemStack> withSize(27, ItemStack.EMPTY);
         EnumFacing chestFacing = EnumFacing.DOWN;
+        boolean hasCustomName = false;
+        String customName = "";
 
         if (te != null)
         {
@@ -88,6 +90,13 @@ public class ItemChestChanger extends ItemTooltip
             {
                 chestContents = ((TileEntityIronChest) te).getItems();
                 chestFacing = ((TileEntityIronChest) te).getFacing();
+
+                if (((TileEntityIronChest) te).hasCustomName())
+                {
+                    hasCustomName = true;
+                    customName = ((TileEntityIronChest) te).getName();
+                }
+
                 newchest = this.type.target.makeEntity();
 
                 if (newchest == null)
@@ -108,6 +117,12 @@ public class ItemChestChanger extends ItemTooltip
                 if (!this.type.canUpgrade(IronChestType.WOOD))
                 {
                     return EnumActionResult.PASS;
+                }
+
+                if (chest.hasCustomName())
+                {
+                    hasCustomName = true;
+                    customName = chest.getName();
                 }
 
                 chestContents = NonNullList.<ItemStack> withSize(chest.getSizeInventory(), ItemStack.EMPTY);
@@ -144,6 +159,11 @@ public class ItemChestChanger extends ItemTooltip
         {
             ((TileEntityIronChest) te2).setContents(chestContents);
             ((TileEntityIronChest) te2).setFacing(chestFacing);
+
+            if (hasCustomName)
+            {
+                ((TileEntityIronChest) te2).setCustomName(customName);
+            }
         }
 
         if (!playerIn.capabilities.isCreativeMode)

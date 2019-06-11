@@ -130,6 +130,8 @@ public class ItemShulkerBoxChanger extends ItemTooltip
         NonNullList<ItemStack> shulkerBoxContents = NonNullList.<ItemStack> withSize(27, ItemStack.EMPTY);
         EnumFacing shulkerBoxFacing = EnumFacing.UP;
         EnumDyeColor shulkerBoxColor = EnumDyeColor.PURPLE;
+        boolean hasCustomName = false;
+        String customName = "";
 
         if (te != null)
         {
@@ -139,6 +141,12 @@ public class ItemShulkerBoxChanger extends ItemTooltip
                 shulkerBoxFacing = ((TileEntityIronShulkerBox) te).getFacing();
                 shulkerBoxColor = getColorFromTileEntity(te, worldIn);
                 ((TileEntityIronShulkerBox) te).setHasBeenUpgraded();
+
+                if (((TileEntityIronShulkerBox) te).hasCustomName())
+                {
+                    hasCustomName = true;
+                    customName = ((TileEntityIronShulkerBox) te).getName();
+                }
 
                 newShulkerBox = this.type.target.makeEntity(shulkerBoxColor);
 
@@ -163,6 +171,12 @@ public class ItemShulkerBoxChanger extends ItemTooltip
                 for (int i = 0; i < shulkerBoxContents.size(); i++)
                 {
                     shulkerBoxContents.set(i, shulkerBox.getStackInSlot(i));
+                }
+
+                if (shulkerBox.hasCustomName())
+                {
+                    hasCustomName = true;
+                    customName = shulkerBox.getName();
                 }
 
                 shulkerBoxColor = getColorFromTileEntity(te, worldIn);
@@ -202,6 +216,11 @@ public class ItemShulkerBoxChanger extends ItemTooltip
         {
             ((TileEntityIronShulkerBox) te2).setContents(shulkerBoxContents);
             ((TileEntityIronShulkerBox) te2).setFacing(shulkerBoxFacing);
+
+            if (hasCustomName)
+            {
+                ((TileEntityIronShulkerBox) te2).setCustomName(customName);
+            }
         }
 
         if (!playerIn.capabilities.isCreativeMode)

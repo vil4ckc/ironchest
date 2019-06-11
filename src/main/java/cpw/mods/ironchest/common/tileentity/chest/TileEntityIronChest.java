@@ -598,7 +598,19 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
     public NBTTagCompound getUpdateTag()
     {
         NBTTagCompound compound = super.getUpdateTag();
+
+        if (!this.checkLootAndWrite(compound))
+        {
+            ItemStackHelper.saveAllItems(compound, this.chestContents);
+        }
+
         compound.setByte("facing", (byte) this.facing.ordinal());
+
+        if (this.hasCustomName())
+        {
+            compound.setString("CustomName", this.customName);
+        }
+
         return compound;
     }
 
