@@ -6,11 +6,6 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.items;
 
-import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
-import cpw.mods.ironchest.common.items.shulker.ItemShulkerBoxChanger;
-import net.minecraft.item.Item;
-import net.minecraftforge.registries.IForgeRegistry;
-
 import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.COPPER;
 import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.CRYSTAL;
 import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.DIAMOND;
@@ -19,6 +14,11 @@ import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.IRON;
 import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.OBSIDIAN;
 import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.SILVER;
 import static cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType.VANILLA;
+
+import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
+import cpw.mods.ironchest.common.items.shulker.ItemShulkerBoxChanger;
+import net.minecraft.item.Item;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public enum ShulkerBoxChangerType
 {

@@ -1,12 +1,13 @@
 package cpw.mods.ironchest.common.crafting.condition;
 
+import java.util.function.BooleanSupplier;
+
 import com.google.gson.JsonObject;
+
 import cpw.mods.ironchest.common.config.Config;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
-
-import java.util.function.BooleanSupplier;
 
 public class IsConfigOptionEnabledConditionFactory implements IConditionFactory
 {
@@ -17,10 +18,10 @@ public class IsConfigOptionEnabledConditionFactory implements IConditionFactory
 
         switch (configSetting)
         {
-            case "enableShulkerBoxRecipes":
-                return () -> Config.enableShulkerBoxRecipes;
-            default:
-                throw new RuntimeException(String.format("Invalid config setting: %s", configSetting));
+        case "enableShulkerBoxRecipes":
+            return () -> Config.enableShulkerBoxRecipes;
+        default:
+            throw new RuntimeException(String.format("Invalid config setting: %s", configSetting));
         }
     }
 }

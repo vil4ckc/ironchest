@@ -10,11 +10,13 @@
  ******************************************************************************/
 package cpw.mods.ironchest.client.renderer.chest;
 
+import java.util.Random;
+
 import com.google.common.primitives.SignedBytes;
+
 import cpw.mods.ironchest.common.blocks.chest.BlockIronChest;
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import cpw.mods.ironchest.common.core.IronChestBlocks;
-import cpw.mods.ironchest.common.tileentity.chest.TileEntityCrystalChest;
 import cpw.mods.ironchest.common.tileentity.chest.TileEntityIronChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -25,8 +27,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-
-import java.util.Random;
 
 public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileEntityIronChest>
 {
@@ -105,31 +105,31 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
 
         switch (facing)
         {
-            case NORTH:
-            {
-                GlStateManager.rotate(180F, 0F, 1F, 0F);
-                break;
-            }
-            case SOUTH:
-            {
-                GlStateManager.rotate(0F, 0F, 1F, 0F);
-                break;
-            }
-            case WEST:
-            {
-                GlStateManager.rotate(90F, 0F, 1F, 0F);
-                break;
-            }
-            case EAST:
-            {
-                GlStateManager.rotate(270F, 0F, 1F, 0F);
-                break;
-            }
-            default:
-            {
-                GlStateManager.rotate(0F, 0F, 1F, 0F);
-                break;
-            }
+        case NORTH:
+        {
+            GlStateManager.rotate(180F, 0F, 1F, 0F);
+            break;
+        }
+        case SOUTH:
+        {
+            GlStateManager.rotate(0F, 0F, 1F, 0F);
+            break;
+        }
+        case WEST:
+        {
+            GlStateManager.rotate(90F, 0F, 1F, 0F);
+            break;
+        }
+        case EAST:
+        {
+            GlStateManager.rotate(270F, 0F, 1F, 0F);
+            break;
+        }
+        default:
+        {
+            GlStateManager.rotate(0F, 0F, 1F, 0F);
+            break;
+        }
         }
 
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
@@ -174,7 +174,7 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
             float blockScale = 0.70F;
             float timeD = (float) (360D * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL) - partialTicks;
 
-            if (((TileEntityCrystalChest) te).getTopItems().get(1).isEmpty())
+            if (te.getTopItems().get(1).isEmpty())
             {
                 shift = 8;
                 blockScale = 0.85F;
@@ -190,7 +190,7 @@ public class TileEntityIronChestRenderer extends TileEntitySpecialRenderer<TileE
 
             customItem.hoverStart = 0F;
 
-            for (ItemStack item : ((TileEntityCrystalChest) te).getTopItems())
+            for (ItemStack item : te.getTopItems())
             {
                 if (shift > shifts.length || shift > 8)
                 {

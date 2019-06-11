@@ -10,13 +10,13 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.items.shulker;
 
+import java.util.Locale;
+
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import java.util.Locale;
 
 public class ItemIronShulkerBox extends ItemBlock
 {

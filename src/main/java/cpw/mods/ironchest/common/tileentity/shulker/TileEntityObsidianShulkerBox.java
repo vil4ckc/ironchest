@@ -10,13 +10,13 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.tileentity.shulker;
 
+import javax.annotation.Nullable;
+
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
-
-import javax.annotation.Nullable;
 
 public class TileEntityObsidianShulkerBox extends TileEntityIronShulkerBox
 {

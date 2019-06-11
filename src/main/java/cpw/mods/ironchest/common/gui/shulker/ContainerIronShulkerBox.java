@@ -53,7 +53,9 @@ public class ContainerIronShulkerBox extends Container
         {
             for (int playerInvCol = 0; playerInvCol < 9; playerInvCol++)
             {
+                //@formatter:off
                 this.addSlotToContainer(new Slot(playerInventory, playerInvCol + playerInvRow * 9 + 9, leftCol + playerInvCol * 18, ySize - (4 - playerInvRow) * 18 - 10));
+                //@formatter:on
             }
 
         }

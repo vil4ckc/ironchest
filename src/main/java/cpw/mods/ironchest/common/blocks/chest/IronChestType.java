@@ -82,25 +82,25 @@ public enum IronChestType implements IStringSerializable
         {
             switch (this)
             {
-                case DIRTCHEST9000:
-                {
-                    this.breakTexture = "minecraft:blocks/dirt";
-                    break;
-                }
-                case OBSIDIAN:
-                {
-                    this.breakTexture = "minecraft:blocks/obsidian";
-                    break;
-                }
-                case WOOD:
-                {
-                    this.breakTexture = "minecraft:blocks/planks_oak";
-                    break;
-                }
-                default:
-                {
-                    this.breakTexture = "ironchest:blocks/" + this.getName() + "break";
-                }
+            case DIRTCHEST9000:
+            {
+                this.breakTexture = "minecraft:blocks/dirt";
+                break;
+            }
+            case OBSIDIAN:
+            {
+                this.breakTexture = "minecraft:blocks/obsidian";
+                break;
+            }
+            case WOOD:
+            {
+                this.breakTexture = "minecraft:blocks/planks_oak";
+                break;
+            }
+            default:
+            {
+                this.breakTexture = "ironchest:blocks/" + this.getName() + "break";
+            }
             }
         }
 
@@ -162,24 +162,24 @@ public enum IronChestType implements IStringSerializable
     {
         switch (this)
         {
-            case IRON:
-                return new TileEntityIronChest();
-            case GOLD:
-                return new TileEntityGoldChest();
-            case DIAMOND:
-                return new TileEntityDiamondChest();
-            case COPPER:
-                return new TileEntityCopperChest();
-            case SILVER:
-                return new TileEntitySilverChest();
-            case CRYSTAL:
-                return new TileEntityCrystalChest();
-            case OBSIDIAN:
-                return new TileEntityObsidianChest();
-            case DIRTCHEST9000:
-                return new TileEntityDirtChest();
-            default:
-                return null;
+        case IRON:
+            return new TileEntityIronChest();
+        case GOLD:
+            return new TileEntityGoldChest();
+        case DIAMOND:
+            return new TileEntityDiamondChest();
+        case COPPER:
+            return new TileEntityCopperChest();
+        case SILVER:
+            return new TileEntitySilverChest();
+        case CRYSTAL:
+            return new TileEntityCrystalChest();
+        case OBSIDIAN:
+            return new TileEntityObsidianChest();
+        case DIRTCHEST9000:
+            return new TileEntityDirtChest();
+        default:
+            return null;
         }
     }
 }

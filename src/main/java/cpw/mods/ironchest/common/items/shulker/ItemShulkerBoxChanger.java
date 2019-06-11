@@ -10,6 +10,8 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.items.shulker;
 
+import java.util.Locale;
+
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import cpw.mods.ironchest.common.core.IronChestCreativeTabs;
@@ -31,8 +33,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.Locale;
 
 public class ItemShulkerBoxChanger extends ItemTooltip
 {
@@ -88,7 +88,9 @@ public class ItemShulkerBoxChanger extends ItemTooltip
      * Called when a Block is right-clicked with this Item
      */
     @Override
+    //@formatter:off
     public EnumActionResult onItemUseFirst(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+    //@formatter:on
     {
         ItemStack itemstack = playerIn.getHeldItem(hand);
 
@@ -125,11 +127,9 @@ public class ItemShulkerBoxChanger extends ItemTooltip
 
         TileEntityIronShulkerBox newShulkerBox = new TileEntityIronShulkerBox();
 
-        NonNullList<ItemStack> shulkerBoxContents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+        NonNullList<ItemStack> shulkerBoxContents = NonNullList.<ItemStack> withSize(27, ItemStack.EMPTY);
         EnumFacing shulkerBoxFacing = EnumFacing.UP;
         EnumDyeColor shulkerBoxColor = EnumDyeColor.PURPLE;
-        boolean hasCustomName = false;
-        String customName = "";
 
         if (te != null)
         {
@@ -139,12 +139,6 @@ public class ItemShulkerBoxChanger extends ItemTooltip
                 shulkerBoxFacing = ((TileEntityIronShulkerBox) te).getFacing();
                 shulkerBoxColor = getColorFromTileEntity(te, worldIn);
                 ((TileEntityIronShulkerBox) te).setHasBeenUpgraded();
-
-                if (((TileEntityIronShulkerBox) te).hasCustomName())
-                {
-                    hasCustomName = true;
-                    customName = ((TileEntityIronShulkerBox) te).getName();
-                }
 
                 newShulkerBox = this.type.target.makeEntity(shulkerBoxColor);
 
@@ -164,17 +158,11 @@ public class ItemShulkerBoxChanger extends ItemTooltip
                     return EnumActionResult.PASS;
                 }
 
-                shulkerBoxContents = NonNullList.<ItemStack>withSize(shulkerBox.getSizeInventory(), ItemStack.EMPTY);
+                shulkerBoxContents = NonNullList.<ItemStack> withSize(shulkerBox.getSizeInventory(), ItemStack.EMPTY);
 
                 for (int i = 0; i < shulkerBoxContents.size(); i++)
                 {
                     shulkerBoxContents.set(i, shulkerBox.getStackInSlot(i));
-                }
-
-                if (shulkerBox.hasCustomName())
-                {
-                    hasCustomName = true;
-                    customName = shulkerBox.getName();
                 }
 
                 shulkerBoxColor = getColorFromTileEntity(te, worldIn);
@@ -214,11 +202,6 @@ public class ItemShulkerBoxChanger extends ItemTooltip
         {
             ((TileEntityIronShulkerBox) te2).setContents(shulkerBoxContents);
             ((TileEntityIronShulkerBox) te2).setFacing(shulkerBoxFacing);
-
-            if (hasCustomName)
-            {
-                ((TileEntityIronShulkerBox) te2).setCustomName(customName);
-            }
         }
 
         if (!playerIn.capabilities.isCreativeMode)

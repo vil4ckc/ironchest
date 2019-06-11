@@ -11,6 +11,7 @@
 package cpw.mods.ironchest.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
+
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -122,7 +123,7 @@ public class ShulkerBoxColorRecipeFactory implements IRecipeFactory
         @Override
         public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
         {
-            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack> withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
             for (int i = 0; i < nonnulllist.size(); ++i)
             {

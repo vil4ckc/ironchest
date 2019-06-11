@@ -1,5 +1,7 @@
 package cpw.mods.ironchest.common.core;
 
+import javax.annotation.Nonnull;
+
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import cpw.mods.ironchest.common.util.CreativeTabItems;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 public final class IronChestCreativeTabs
 {

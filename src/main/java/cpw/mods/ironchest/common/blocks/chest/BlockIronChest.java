@@ -10,6 +10,10 @@
  ******************************************************************************/
 package cpw.mods.ironchest.common.blocks.chest;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.core.IronChestCreativeTabs;
 import cpw.mods.ironchest.common.tileentity.chest.TileEntityIronChest;
@@ -48,9 +52,6 @@ import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockIronChest extends Block
 {
