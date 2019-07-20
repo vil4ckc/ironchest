@@ -618,7 +618,24 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     {
         NBTTagCompound compound = new NBTTagCompound();
 
+        if (!this.checkLootAndWrite(compound))
+        {
+            ItemStackHelper.saveAllItems(compound, this.items, false);
+        }
+
+        compound.setInteger("ShulkerBoxSize", this.getSizeInventory());
+
         compound.setByte("facing", (byte) this.facing.ordinal());
+
+        if (this.hasCustomName())
+        {
+            compound.setString("CustomName", this.customName);
+        }
+
+        if (!compound.hasKey("Lock") && this.isLocked())
+        {
+            this.getLockCode().toNBT(compound);
+        }
 
         return new SPacketUpdateTileEntity(this.pos, 0, compound);
     }

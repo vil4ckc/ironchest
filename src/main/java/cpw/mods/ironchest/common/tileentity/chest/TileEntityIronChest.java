@@ -455,7 +455,7 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
             this.numPlayersUsing = (type & 0xF8) >> 3;
         }
 
-        return true;
+        return super.receiveClientEvent(id, type);
     }
 
     @Override
@@ -509,7 +509,17 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
     {
         NBTTagCompound compound = new NBTTagCompound();
 
+        if (!this.checkLootAndWrite(compound))
+        {
+            ItemStackHelper.saveAllItems(compound, this.chestContents);
+        }
+
         compound.setByte("facing", (byte) this.facing.ordinal());
+
+        if (this.hasCustomName())
+        {
+            compound.setString("CustomName", this.customName);
+        }
 
         return new SPacketUpdateTileEntity(this.pos, 0, compound);
     }
