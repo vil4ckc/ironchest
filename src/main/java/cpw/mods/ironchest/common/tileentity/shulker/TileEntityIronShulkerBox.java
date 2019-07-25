@@ -20,7 +20,6 @@ import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.common.blocks.shulker.BlockIronShulkerBox;
 import cpw.mods.ironchest.common.blocks.shulker.IronShulkerBoxType;
 import cpw.mods.ironchest.common.gui.shulker.ContainerIronShulkerBox;
-import cpw.mods.ironchest.common.lib.ICShulkerInventoryHandler;
 import cpw.mods.ironchest.common.network.MessageCrystalShulkerSync;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockShulkerBox;
@@ -884,7 +883,7 @@ public class TileEntityIronShulkerBox extends TileEntityLockableLoot implements 
     @Override
     protected IItemHandler createUnSidedHandler()
     {
-        return new ICShulkerInventoryHandler(this);
+        return new net.minecraftforge.items.wrapper.InvWrapper(this);
     }
 
     @SuppressWarnings("unchecked")

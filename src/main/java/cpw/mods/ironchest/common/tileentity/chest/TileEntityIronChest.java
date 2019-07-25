@@ -18,7 +18,6 @@ import cpw.mods.ironchest.common.blocks.chest.BlockIronChest;
 import cpw.mods.ironchest.common.blocks.chest.IronChestType;
 import cpw.mods.ironchest.common.core.IronChestBlocks;
 import cpw.mods.ironchest.common.gui.chest.ContainerIronChest;
-import cpw.mods.ironchest.common.lib.ICChestInventoryHandler;
 import cpw.mods.ironchest.common.network.MessageCrystalChestSync;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -680,7 +679,7 @@ public class TileEntityIronChest extends TileEntityLockableLoot implements ITick
     @Override
     protected IItemHandler createUnSidedHandler()
     {
-        return new ICChestInventoryHandler(this);
+        return new net.minecraftforge.items.wrapper.InvWrapper(this);
     }
 
     @SuppressWarnings("unchecked")
