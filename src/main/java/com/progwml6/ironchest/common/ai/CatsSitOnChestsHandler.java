@@ -23,7 +23,6 @@ public class CatsSitOnChestsHandler
     @SubscribeEvent
     public void changeSittingTaskForOcelots(final LivingEvent.LivingUpdateEvent evt)
     {
-        /*
         if (evt.getEntityLiving().ticksExisted < 5 && evt.getEntityLiving() instanceof CatEntity)
         {
             HashSet<PrioritizedGoal> goals = new HashSet<>();
@@ -32,7 +31,7 @@ public class CatsSitOnChestsHandler
 
             for (PrioritizedGoal goal : catEntity.goalSelector.goals)
             {
-                if (goal.func_220772_j().getClass() == CatSitOnBlockGoal.class)
+                if (goal.getGoal().getClass() == CatSitOnBlockGoal.class)
                 {
                     goals.add(goal);
                 }
@@ -40,9 +39,9 @@ public class CatsSitOnChestsHandler
 
             for (PrioritizedGoal goal : goals)
             {
-                catEntity.goalSelector.removeGoal(goal.func_220772_j());
-                catEntity.goalSelector.addGoal(goal.getPriority(), new IronChestCatSitOnBlockGoal1(catEntity, 0.4F));
+                catEntity.goalSelector.removeGoal(goal.getGoal());
+                catEntity.goalSelector.addGoal(goal.getPriority(), new IronChestCatSitOnBlockGoal(catEntity, 0.4F));
             }
-        }*/
+        }
     }
 }
