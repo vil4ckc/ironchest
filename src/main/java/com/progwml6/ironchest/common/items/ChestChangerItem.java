@@ -89,6 +89,11 @@ public class ChestChangerItem extends TooltipItem
                 IronChestTileEntity chest = (IronChestTileEntity) tileEntity;
                 BlockState chestState = world.getBlockState(blockPos);
 
+                if (!chest.canOpen(entityPlayer))
+                {
+                    return ActionResultType.PASS;
+                }
+
                 chestContents = chest.getItems();
                 chestFacing = chestState.get(ChestBlock.FACING);
                 customName = chest.getCustomName();
@@ -106,6 +111,11 @@ public class ChestChangerItem extends TooltipItem
                 ChestTileEntity chest = (ChestTileEntity) tileEntity;
 
                 if (ChestTileEntity.getPlayersUsing(world, blockPos) > 0)
+                {
+                    return ActionResultType.PASS;
+                }
+
+                if(!chest.canOpen(entityPlayer))
                 {
                     return ActionResultType.PASS;
                 }
