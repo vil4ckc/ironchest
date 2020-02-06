@@ -1,0 +1,33 @@
+{
+  "_comment": "Bloques",
+  "block.ironchest.iron_chest": "Cofre de hierro",
+  "block.ironchest.gold_chest": "Cofre de oro",
+  "block.ironchest.diamond_chest": "Cofre de diamante",
+  "block.ironchest.copper_chest": "Cofre de bronce",
+  "block.ironchest.silver_chest": "Cofre de plata",
+  "block.ironchest.crystal_chest": "Cofre de cristal",
+  "block.ironchest.obsidian_chest": "Cofre de obsidiana",
+  "block.ironchest.dirt_chest": "¡Trasto-Cofre 9000!",
+  
+  "_comment": "Mejoras",
+  "item.ironchest.iron_gold_chest_upgrade": "Mejora de cofre de hierro a oro",
+  "item.ironchest.gold_diamond_chest_upgrade": "Mejora de cofre de oro a diamante",
+  "item.ironchest.copper_silver_chest_upgrade": "Mejora de cofre de cobre a plata",
+  "item.ironchest.silver_gold_chest_upgrade": "Mejora de cofre de plata a oro",
+  "item.ironchest.copper_iron_chest_upgrade": "Mejora de cofre de cobre a hierro",
+  "item.ironchest.diamond_crystal_chest_upgrade": "Mejora de cofre de diamante a cristal",
+  "item.ironchest.wood_iron_chest_upgrade": "Mejora de cofre de madera a hierro",
+  "item.ironchest.wood_copper_chest_upgrade": "Mejora de cofre de madera a cobre",
+  "item.ironchest.diamond_obsidian_chest_upgrade": "Mejora de cofre de diamante a obsidiana",
+  
+  "_comment": "Books",
+  "book.ironchest.dirtchest9000.title": "Cómo usar tu Trasto-Cofre 9000",
+  "book.ironchest.dirtchest9000.page1": "¡Te damos la bienvenida a tu nuevo Trasto-Cofre 9000! Esperamos que disfrutes durante muchos años guardando tus trastos en nuestro útil de almacenaje.",
+  "book.ironchest.dirtchest9000.page2": "Modo de empleo: Simplemente, introduce los trastos que desees en la ranura receptiva y disfruta de la comodidad de tener dichos trastos a tu disposición cada vez que te acerques a este cofre.",
+  "book.ironchest.dirtchest9000.page3": "¡Esperamos que hayas disfrutado revisando este manual de instrucciones y que consideres usar nuestros productos en el futuro! Saludos cordiales, Escritores del Manual del Trasto-Cofre 9000 S. A.",
+  "book.ironchest.dirtchest9000.page4": "Garantía: Este producto no incluye ningún tipo de garantía. Puede que tus trastos no se almacenen, puede que poco a poco parasite el entorno o, alternativamente, puede que no haga nada en absoluto.",
+  "book.ironchest.dirtchest9000.page5": "El Trasto-Cofre 9000 es sostenible. Por favor, deshazte de esta guía con responsabilidad y, hagas lo que hagas, no lo arrojes a la lava. Nos pondríamos muy tristes.",
+  
+  "_comment": "Grupos de objetos",
+  "itemGroup.ironchest": "Cofres de hierro"
+}
