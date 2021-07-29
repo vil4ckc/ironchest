@@ -43,9 +43,6 @@ public class IronChestTileEntityRenderer<T extends TileEntity & IChestLid> exten
   private final ModelRenderer chestBottom;
   private final ModelRenderer chestLock;
 
-  private static ItemEntity customItem;
-  private static ItemRenderer itemRenderer;
-
   private static final List<ModelItem> MODEL_ITEMS = Arrays.asList(
     new ModelItem(new Vector3f(0.3F, 0.45F, 0.3F), 3.0F),
     new ModelItem(new Vector3f(0.7F, 0.45F, 0.3F), 3.0F),
@@ -120,13 +117,8 @@ public class IronChestTileEntityRenderer<T extends TileEntity & IChestLid> exten
         float rotation = (float) (360D * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL) - partialTicks;
         CrystalChestTileEntity crystalChestTileEntity = (CrystalChestTileEntity) tileEntity;
 
-        if (customItem == null) {
-          assert world != null;
-          customItem = new ItemEntity(EntityType.ITEM, world);
-        }
-
         for (int j = 0; j < MODEL_ITEMS.size() - 1; j++) {
-          renderItem(matrixStackIn, bufferIn, crystalChestTileEntity.getTopItems().get(j), MODEL_ITEMS.get(j), rotation, combinedLightIn, partialTicks);
+          renderItem(matrixStackIn, bufferIn, crystalChestTileEntity.getTopItems().get(j), MODEL_ITEMS.get(j), rotation, combinedLightIn);
         }
       }
     }
@@ -149,11 +141,9 @@ public class IronChestTileEntityRenderer<T extends TileEntity & IChestLid> exten
    * @param modelItem Model items for render information
    * @param light     Model light
    */
-  public static void renderItem(MatrixStack matrices, IRenderTypeBuffer buffer, ItemStack item, ModelItem modelItem, float rotation, int light, float partialTicks) {
+  public static void renderItem(MatrixStack matrices, IRenderTypeBuffer buffer, ItemStack item, ModelItem modelItem, float rotation, int light) {
     // if no stack, skip
     if (item.isEmpty()) return;
-
-    customItem.setItem(item);
 
     // start rendering
     matrices.push();
@@ -166,27 +156,7 @@ public class IronChestTileEntityRenderer<T extends TileEntity & IChestLid> exten
     float scale = modelItem.getSizeScaled();
     matrices.scale(scale, scale, scale);
 
-    // render the actual item
-    if (itemRenderer == null) {
-      itemRenderer = new ItemRenderer(Minecraft.getInstance().getRenderManager(), Minecraft.getInstance().getItemRenderer()) {
-        @Override
-        public int getModelCount(ItemStack stack) {
-          return SignedBytes.saturatedCast(Math.min(stack.getCount() / 32, 15) + 1);
-        }
-
-        @Override
-        public boolean shouldBob() {
-          return false;
-        }
-
-        @Override
-        public boolean shouldSpreadItems() {
-          return true;
-        }
-      };
-    }
-
-    itemRenderer.render(customItem, 0F, partialTicks, matrices, buffer, light);
+    Minecraft.getInstance().getItemRenderer().renderItem(item, ItemCameraTransforms.TransformType.NONE, light, OverlayTexture.NO_OVERLAY, matrices, buffer);
     matrices.pop();
   }
 }
