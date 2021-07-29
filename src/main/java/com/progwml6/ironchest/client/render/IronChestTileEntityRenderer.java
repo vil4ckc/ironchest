@@ -1,6 +1,5 @@
 package com.progwml6.ironchest.client.render;
 
-import com.google.common.primitives.SignedBytes;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.progwml6.ironchest.client.model.IronChestsModels;
@@ -15,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.model.RenderMaterial;
@@ -23,8 +21,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.DualBrightnessCallback;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.TileEntity;
@@ -76,7 +72,7 @@ public class IronChestTileEntityRenderer<T extends TileEntity & IChestLid> exten
     World world = tileEntity.getWorld();
     boolean flag = world != null;
 
-    BlockState blockstate = flag ? tileEntity.getBlockState() : (BlockState) tileEntity.getBlockToUse().getDefaultState().with(GenericIronChestBlock.FACING, Direction.SOUTH);
+    BlockState blockstate = flag ? tileEntity.getBlockState() : tileEntity.getBlockToUse().getDefaultState().with(GenericIronChestBlock.FACING, Direction.SOUTH);
     Block block = blockstate.getBlock();
     IronChestsTypes chestType = IronChestsTypes.IRON;
     IronChestsTypes actualType = GenericIronChestBlock.getTypeFromBlock(block);
