@@ -257,20 +257,20 @@ public class IronChestsRecipeProvider extends RecipeProvider implements IConditi
       .build(consumer, prefix(IronChestsItems.UPGRADES.get(IronChestsUpgradeType.GOLD_TO_DIAMOND).get(), folder));
 
     ShapedRecipeBuilder.shapedRecipe(IronChestsItems.UPGRADES.get(IronChestsUpgradeType.DIAMOND_TO_OBSIDIAN).get())
-      .key('S', Blocks.OBSIDIAN)
+      .key('M', Blocks.OBSIDIAN)
       .key('G', Tags.Items.GLASS)
-      .patternLine("GGG")
-      .patternLine("GSG")
-      .patternLine("GGG")
+      .patternLine("MMM")
+      .patternLine("MGM")
+      .patternLine("MMM")
       .addCriterion("has_glass", hasItem(Tags.Items.GLASS))
       .build(consumer, prefix(IronChestsItems.UPGRADES.get(IronChestsUpgradeType.DIAMOND_TO_OBSIDIAN).get(), folder));
 
     ShapedRecipeBuilder.shapedRecipe(IronChestsItems.UPGRADES.get(IronChestsUpgradeType.DIAMOND_TO_CRYSTAL).get())
       .key('M', Blocks.OBSIDIAN)
       .key('G', Tags.Items.GLASS)
-      .patternLine("MMM")
-      .patternLine("MGM")
-      .patternLine("MMM")
+      .patternLine("GGG")
+      .patternLine("GMG")
+      .patternLine("GGG")
       .addCriterion("has_glass", hasItem(Tags.Items.GLASS))
       .build(consumer, prefix(IronChestsItems.UPGRADES.get(IronChestsUpgradeType.DIAMOND_TO_CRYSTAL).get(), folder));
 
