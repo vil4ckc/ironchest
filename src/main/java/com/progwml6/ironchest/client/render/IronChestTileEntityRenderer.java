@@ -146,7 +146,7 @@ public class IronChestTileEntityRenderer<T extends TileEntity & IChestLid> exten
     Vector3f center = modelItem.getCenter();
     matrices.translate(center.getX(), center.getY(), center.getZ());
 
-    matrices.rotate(Vector3f.YP.rotation(rotation));
+    matrices.rotate(Vector3f.YP.rotationDegrees(rotation));
 
     // scale
     float scale = modelItem.getSizeScaled();
