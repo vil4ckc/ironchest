@@ -119,11 +119,11 @@ public class IronChestRenderer<T extends BlockEntity & LidBlockEntity> implement
         neighborCombineResult = DoubleBlockCombiner.Combiner::acceptNone;
       }
 
-      float openness = neighborCombineResult.<Float2FloatFunction>apply(AbstractIronChestBlock.opennessCombiner(tileEntity)).get(partialTicks);
+      float openness = neighborCombineResult.apply(AbstractIronChestBlock.opennessCombiner(tileEntity)).get(partialTicks);
       openness = 1.0F - openness;
       openness = 1.0F - openness * openness * openness;
 
-      int brightness = neighborCombineResult.<Int2IntFunction>apply(new BrightnessCombiner<>()).applyAsInt(combinedLightIn);
+      int brightness = neighborCombineResult.apply(new BrightnessCombiner<>()).applyAsInt(combinedLightIn);
 
       boolean trapped = tileEntityIn instanceof AbstractTrappedIronChestBlockEntity;
 
@@ -172,7 +172,7 @@ public class IronChestRenderer<T extends BlockEntity & LidBlockEntity> implement
     Vector3f center = modelItem.getCenter();
     matrices.translate(center.x(), center.y(), center.z());
 
-    matrices.mulPose(Vector3f.YP.rotation(rotation));
+    matrices.mulPose(Vector3f.YP.rotationDegrees(rotation));
 
     // scale
     float scale = modelItem.getSizeScaled();
