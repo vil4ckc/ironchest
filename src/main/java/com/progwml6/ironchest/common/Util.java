@@ -1,7 +1,6 @@
 package com.progwml6.ironchest.common;
 
 import com.progwml6.ironchest.IronChests;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
